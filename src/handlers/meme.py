@@ -10,12 +10,40 @@ from google.appengine.api.images import Image
 from mako.template import Template
 
 
+class GetUserMemesHandler(webapp2.RequestHandler):
+  def get(self):
+    req = self.request
+
+    creator = req.get('email')
+    if not creator:
+      self.error(400)
+      return
+
+    count = int(req.get('count', 20))
+    if count > 100:
+      count = 100
+
+    # TODO(d): finish this
+
+
 class MemeHandler(webapp2.RequestHandler):
   def get(self):
     req = self.request
 
-    template = Template(filename='templates/view_meme.html')
-    self.response.write(template.render())
+    # If there's a meme id, render it.
+    id = self.request.get('id')
+    if not id:
+      self.error(400)
+      return
+
+    # TODO(d): Guard against non-integer ids
+    meme = MemeTemplate.get_by_id(int(id))
+    if not meme:
+      self.error(404)
+      return
+
+    self.response.headers['Content-Type'] = 'image/png'
+    self.response.write(meme.image_data)
 
 
   def post(self):

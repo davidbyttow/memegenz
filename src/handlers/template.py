@@ -18,6 +18,7 @@ from model.meme_template import MemeTemplate
 class GetTemplatesHandler(webapp2.RequestHandler):
   def get(self):
     req = self.request
+
     count = int(req.get('count', 20))
     if count > 100:
       count = 100
@@ -48,6 +49,7 @@ class GetTemplatesHandler(webapp2.RequestHandler):
     self.response.headers['Content-Type'] = 'application/json'
     self.response.write(json.dumps(data))
 
+
 class TemplateHandler(webapp2.RequestHandler):
   def get(self):
     req = self.request
@@ -55,7 +57,7 @@ class TemplateHandler(webapp2.RequestHandler):
     # If there's a template id, render it.
     template_name = self.request.get('name')
     if not template_name:
-      # TODO(d): Remove this, it should be in another place.
+      # TODO(d): Remove this, it should be in the default page handler.
       template = Template(filename='templates/upload_template.html')
       self.response.write(template.render())
       return
