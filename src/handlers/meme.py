@@ -38,16 +38,18 @@ class MemeHandler(webapp2.RequestHandler):
       image.resize(800, image.height * scalar)
     image.execute_transforms(output_encoding=images.PNG)
 
-    meme = Meme()
-    meme.creator = creator
-    meme.listed = listed
-    meme.image_data = db.Blob(image)
-    meme.template_name = template_name
-    meme.height = image.height
-    meme.width = image.width
-    meme.put()
+    meme = Meme(
+      creator=creator,
+      listed=listed,
+      image_data=db.Blob(image),
+      template_name=template_name,
+      height=image.height,
+      width=image.width)
+    key = meme.put()
 
-  # TODO(d): redirect back
+  # TODO(d): redirect to viewing the meme
 
   def delete(self):
     req = self.request
+
+    # TODO(d): delete the meme if the user has permission

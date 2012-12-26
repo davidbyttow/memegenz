@@ -1,3 +1,5 @@
+import base64
+import json
 import logging
 import os
 import sys
@@ -13,17 +15,52 @@ from mako.template import Template
 from model.meme_template import MemeTemplate
 
 
+class GetTemplatesHandler(webapp2.RequestHandler):
+  def get(self):
+    req = self.request
+    count = int(req.get('count', 20))
+    if count > 100:
+      count = 100
+
+    q = MemeTemplate.all().order('-create_datetime')
+
+    cursor = req.get('cursor')
+    if cursor:
+      q.with_cursor(cursor)
+
+    data = {
+      'templates': []
+    }
+
+    for template in q.run(limit=count):
+      template_data = {
+        'name': template.name,
+        'width': template.width,
+        'height': template.height,
+        # TODO(d): I don't think we want to send this down with get templates, instead just
+        # individually render the images by calling /template?name=%s with the template name.
+#        'image_data': 'data:image/png;base64,' + base64.b64encode(template.image_data),
+      }
+      data['templates'].append(template_data)
+
+    data['cursor'] = q.cursor()
+
+    self.response.headers['Content-Type'] = 'application/json'
+    self.response.write(json.dumps(data))
+
 class TemplateHandler(webapp2.RequestHandler):
   def get(self):
     req = self.request
 
-    id = self.request.get('id')
-    if not id:
+    # If there's a template id, render it.
+    template_name = self.request.get('name')
+    if not template_name:
+      # TODO(d): Remove this, it should be in another place.
       template = Template(filename='templates/upload_template.html')
       self.response.write(template.render())
       return
 
-    meme_template = MemeTemplate.get_by_id(int(id))
+    meme_template = MemeTemplate.get_by_key_name(template_name)
     if not meme_template:
       self.error(404)
       return
@@ -38,6 +75,11 @@ class TemplateHandler(webapp2.RequestHandler):
     template_name = req.get('template_name')
     image_data = req.get('image_data')
 
+    existing_template = MemeTemplate.get_by_key_name(template_name)
+    if existing_template:
+      self.error(400)
+      return
+
     # Create an image in order to get the width and height
     image = Image(image_data=image_data)
     width = image.width
@@ -50,6 +92,7 @@ class TemplateHandler(webapp2.RequestHandler):
     image_data = images.resize(image_data, width, height, images.PNG)
 
     meme_template = MemeTemplate(
+      key_name=template_name,
       creator=creator,
       image_data=db.Blob(image_data),
       name=template_name,
@@ -57,4 +100,5 @@ class TemplateHandler(webapp2.RequestHandler):
       width=image.width)
     key = meme_template.put()
 
-    self.redirect('/template?id=' + str(key.id()))
+    # This should probably redirect to create meme.
+    self.redirect('/template?name=' + key.name())
