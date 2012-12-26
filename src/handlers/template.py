@@ -50,17 +50,17 @@ class GetTemplatesHandler(webapp2.RequestHandler):
     self.response.write(json.dumps(data))
 
 
-class TemplateHandler(webapp2.RequestHandler):
+class CreateTemplateHandler(webapp2.RequestHandler):
   def get(self):
     req = self.request
 
-    # If there's a template id, render it.
-    template_name = self.request.get('name')
-    if not template_name:
-      # TODO(d): Remove this, it should be in the default page handler.
-      template = Template(filename='templates/upload_template.html')
-      self.response.write(template.render())
-      return
+    template = Template(filename='templates/upload_template.html')
+    self.response.write(template.render())
+
+
+class TemplateHandler(webapp2.RequestHandler):
+  def get(self, template_name):
+    req = self.request
 
     meme_template = MemeTemplate.get_by_key_name(template_name)
     if not meme_template:
@@ -103,4 +103,4 @@ class TemplateHandler(webapp2.RequestHandler):
     key = meme_template.put()
 
     # This should probably redirect to create meme.
-    self.redirect('/template?name=' + key.name())
+    self.redirect('/template/' + key.name())
