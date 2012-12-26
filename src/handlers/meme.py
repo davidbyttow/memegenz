@@ -30,7 +30,8 @@ class CreateMemeHandler(webapp2.RequestHandler):
   def get(self):
     req = self.request
 
-    # TODO(d):
+    html = template_helper.render('create_meme.html')
+    self.response.write(html)
 
 
 class MemeHandler(webapp2.RequestHandler):
