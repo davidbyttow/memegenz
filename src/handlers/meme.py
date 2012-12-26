@@ -2,9 +2,17 @@ import model
 import webapp2
 
 from google.appengine.api import images
+from mako.template import Template
 
 
 class MemeHandler(webapp2.RequestHandler):
+  def get(self):
+    req = self.request
+
+    template = Template(filename='templates/view_meme.html')
+    self.response.write(template.render())
+
+
   def post(self):
     req = self.request
 
@@ -28,3 +36,8 @@ class MemeHandler(webapp2.RequestHandler):
     meme.height = height
     meme.width = width
     meme.put()
+
+  # TODO(d): redirect back
+
+  def delete(self):
+    req = self.request
