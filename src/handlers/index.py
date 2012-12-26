@@ -1,7 +1,9 @@
 import webapp2
 
+from mako.template import Template
+
 
 class IndexHandler(webapp2.RequestHandler):
   def get(self):
-    self.response.headers['Content-Type'] = 'text/plain'
-    self.response.write('Hello, World!')
+    template = Template(filename='templates/index.html')
+    self.response.write(template.render())
