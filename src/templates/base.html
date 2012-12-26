@@ -1,10 +1,26 @@
 <html>
   <body>
     <div class="header">
-      <%block name="header"/>
+      <%block name="header">
+        <h1>Memegen</h1>
+      </%block>
     </div>
 
-    ${self.body()}
+    <div class="leftnav">
+      <%block name="leftnav">
+        <ul>
+          <li>Create Meme</li>
+          <li>Top Memes</li>
+          <li>Recent Memes</li>
+          <li>My Memes</li>
+          <li>Upload Template</li>
+        </ul>
+      </%block>
+    </div>
+
+    <div class="body">
+      ${self.body()}
+    </div>
 
     <div class="footer">
       <%block name="footer"/>
