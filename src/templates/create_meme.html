@@ -1,3 +1,11 @@
-<form action="/meme" enctype="multipart/form-data" method="post">
-  Image: <input type="file" name="image_data">
+<%inherit file="base.html"/>
+
+<form action="/template" enctype="multipart/form-data" method="post">
+  <div>
+    <label>Image:</label> <input type="file" name="image_data"/>
+  </div>
+  <div>
+    <label>Image:</label> <input type="file" name="image_data"/>
+  </div>
+  <input type="submit" value="Upload"/>
 </form>

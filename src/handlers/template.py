@@ -11,7 +11,7 @@ from google.appengine.api import images
 from google.appengine.api import users
 from google.appengine.api.images import Image
 from google.appengine.ext import db
-from mako.template import Template
+from helpers import template_helper
 from model.meme_template import MemeTemplate
 
 
@@ -54,8 +54,8 @@ class CreateTemplateHandler(webapp2.RequestHandler):
   def get(self):
     req = self.request
 
-    template = Template(filename='templates/upload_template.html')
-    self.response.write(template.render())
+    html = template_helper.render('upload_template.html')
+    self.response.write(html)
 
 
 class TemplateHandler(webapp2.RequestHandler):

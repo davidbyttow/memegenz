@@ -1,9 +1,9 @@
 import webapp2
 
-from mako.template import Template
+from helpers import template_helper
 
 
 class HomeHandler(webapp2.RequestHandler):
   def get(self):
-    template = Template(filename='templates/index.html')
-    self.response.write(template.render(person='Jason'))
+    html = template_helper.render('index.html')
+    self.response.write(html)

@@ -7,7 +7,7 @@ import webapp2
 from google.appengine.api import images
 from google.appengine.api import users
 from google.appengine.api.images import Image
-from mako.template import Template
+from helpers import template_helper
 
 
 class GetUserMemesHandler(webapp2.RequestHandler):
@@ -31,7 +31,6 @@ class CreateMemeHandler(webapp2.RequestHandler):
     req = self.request
 
     # TODO(d):
-
 
 
 class MemeHandler(webapp2.RequestHandler):
