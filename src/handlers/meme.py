@@ -7,7 +7,7 @@ import webapp2
 from google.appengine.api import images
 from google.appengine.api import users
 from google.appengine.api.images import Image
-from mako.template import Template
+from helpers import template_helper
 
 
 class GetUserMemesHandler(webapp2.RequestHandler):
@@ -26,18 +26,21 @@ class GetUserMemesHandler(webapp2.RequestHandler):
     # TODO(d): finish this
 
 
-class MemeHandler(webapp2.RequestHandler):
+class CreateMemeHandler(webapp2.RequestHandler):
   def get(self):
     req = self.request
 
-    # If there's a meme id, render it.
-    id = self.request.get('id')
-    if not id:
-      self.error(400)
-      return
+    html = template_helper.render('create_meme.html')
+    self.response.write(html)
 
+
+class MemeHandler(webapp2.RequestHandler):
+  def get(self, meme_id):
+    req = self.request
+
+    # If there's a meme id, render it.
     # TODO(d): Guard against non-integer ids
-    meme = MemeTemplate.get_by_id(int(id))
+    meme = Meme.get_by_id(int(meme_id))
     if not meme:
       self.error(404)
       return
@@ -74,6 +77,8 @@ class MemeHandler(webapp2.RequestHandler):
       height=image.height,
       width=image.width)
     key = meme.put()
+
+    self.redirect('/meme/' + str(key.id()))
 
   # TODO(d): redirect to viewing the meme
 
