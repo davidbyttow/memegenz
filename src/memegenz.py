@@ -12,6 +12,7 @@ class EditorHandler(webapp2.RequestHandler):
     
     self.response.headers['Content-Type'] = 'text/html'
     self.response.write('Hello, World!')
+    template_values = {}
     
     #template_values = {}
     #path = os.path.join(os.path.dirname(__file__), 'templates/editor.html')
