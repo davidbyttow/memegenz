@@ -1,7 +1,12 @@
-import model
+import sys
+import os
+sys.path.append(os.path.abspath('../model'))
+from model.meme import Meme
 import webapp2
 
 from google.appengine.api import images
+from google.appengine.api import users
+from google.appengine.api.images import Image
 from mako.template import Template
 
 
@@ -25,16 +30,21 @@ class MemeHandler(webapp2.RequestHandler):
 
     template_name = req.get('template_name')
     image_data = req.get('image_data')
-    width = req.get('width')
-    height = req.get('height')
 
-    meme = model.Meme()
+    # Create the image and transform it to a PNG.
+    image = Image(image_data=image_data)
+    if (image.width > 800):
+      scalar = 800 / image.width
+      image.resize(800, image.height * scalar)
+    image.execute_transforms(output_encoding=images.PNG)
+
+    meme = Meme()
     meme.creator = creator
     meme.listed = listed
-    meme.image_data = image_data
+    meme.image_data = db.Blob(image)
     meme.template_name = template_name
-    meme.height = height
-    meme.width = width
+    meme.height = image.height
+    meme.width = image.width
     meme.put()
 
   # TODO(d): redirect back

@@ -14,3 +14,4 @@ handlers:
 
 - url: /.*
   script: memegenz.app
+  login: required
