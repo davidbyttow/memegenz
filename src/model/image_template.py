@@ -1,5 +1,7 @@
 import datetime
+
 from google.appengine.ext import db
+
 
 class ImageTemplate(db.Model):
   creator = db.EmailProperty(required=True, indexed=True)

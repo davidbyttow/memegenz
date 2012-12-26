@@ -1,10 +1,8 @@
 import webapp2
 
-class MainPage(webapp2.RequestHandler):
-  def get(self):
-    self.response.headers['Content-Type'] = 'text/plain'
-    self.response.write('Hello, World!')
+from handlers import routes
 
-app = webapp2.WSGIApplication([
-  ('/', MainPage)],
+
+app = webapp2.WSGIApplication(
+  routes.ROUTES,
   debug=True)
