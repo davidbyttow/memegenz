@@ -5,5 +5,13 @@ api_version: 1
 threadsafe: true
 
 handlers:
+- url: /favicon.ico
+  static_files: public/images/favicon.ico
+  upload: public/images/favicon.ico
+
+- url: /images
+  static_dir: public/images
+
 - url: /.*
-  script: memegenz.py
+  script: memegenz.app
+  login: required
