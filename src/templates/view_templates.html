@@ -6,8 +6,10 @@
   % endif
 
   <div class="template">
-    <img class="template-image" src="/template/${template.name}">
-    ${template.name}
+    <a href="/meme?template_name=${template.name}">
+      <img class="template-image" src="/template/${template.name}">
+    </a>
+    <span class="template-name">${template.name}</span>
   </div>
 
   % if loop.index % 4 == 3:
