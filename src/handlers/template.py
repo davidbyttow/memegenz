@@ -71,8 +71,6 @@ class CreateTemplateHandler(webapp2.RequestHandler):
     if (image.width > 800):
       width = 800
       height = image.height * scalar
-    else:
-      image.resize(image.width, image.height)
     image_data = images.resize(image_data, width, height, images.PNG)
 
     meme_template = MemeTemplate(
