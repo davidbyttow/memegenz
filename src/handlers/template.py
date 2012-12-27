@@ -52,6 +52,26 @@ class CreateTemplateHandler(webapp2.RequestHandler):
     html = template_helper.render('upload_template.html')
     self.response.write(html)
 
+
+class TemplateHandler(webapp2.RequestHandler):
+  def get(self, template_name):
+    req = self.request
+
+    # TODO(d): Render template page
+
+
+class TemplateImageHandler(webapp2.RequestHandler):
+  def get(self, template_name):
+    req = self.request
+
+    meme_template = MemeTemplate.get_by_key_name(template_name)
+    if not meme_template:
+      self.error(404)
+      return
+
+    self.response.headers['Content-Type'] = 'image/png'
+    self.response.write(meme_template.image_data)
+
   def post(self):
     req = self.request
 
@@ -83,17 +103,4 @@ class CreateTemplateHandler(webapp2.RequestHandler):
     key = meme_template.put()
 
     # This should probably redirect to create meme.
-    self.redirect('/template/' + key.name())
-
-
-class TemplateHandler(webapp2.RequestHandler):
-  def get(self, template_name):
-    req = self.request
-
-    meme_template = MemeTemplate.get_by_key_name(template_name)
-    if not meme_template:
-      self.error(404)
-      return
-
-    self.response.headers['Content-Type'] = 'image/png'
-    self.response.write(meme_template.image_data)
+    self.redirect('/meme?template_name=' + key.name())

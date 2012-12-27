@@ -96,6 +96,13 @@ class MemeHandler(webapp2.RequestHandler):
   def get(self, meme_id):
     req = self.request
 
+    # TODO(d): render the meme page
+
+
+class MemeImageHandler(webapp2.RequestHandler):
+  def get(self, meme_id):
+    req = self.request
+
     # If there's a meme id, render it.
     # TODO(d): Guard against non-integer ids
     meme = Meme.get_by_id(int(meme_id))
@@ -120,7 +127,7 @@ class MemeHandler(webapp2.RequestHandler):
     image_data = req.get('image_data')
 
     key = insert_meme(creator, listed, template_name, image_data)
-    self.redirect('/meme/' + str(key.id()))
+    self.redirect('/meme/image/' + str(key.id()))
 
   def delete(self):
     req = self.request
