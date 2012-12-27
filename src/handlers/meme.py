@@ -8,22 +8,19 @@ from google.appengine.api import images
 from google.appengine.api import users
 from google.appengine.api.images import Image
 from helpers import template_helper
+from helpers.obj import Expando
 
 
-class GetUserMemesHandler(webapp2.RequestHandler):
+class GetMemesHandler(webapp2.RequestHandler):
   def get(self):
     req = self.request
 
-    creator = req.get('email')
-    if not creator:
-      self.error(400)
-      return
-
-    count = int(req.get('count', 20))
-    if count > 100:
-      count = 100
+    memes = Expando()
 
     # TODO(d): finish this
+
+    html = template_helper.render('view_memes.html', memes=memes)
+    self.response.write(html)
 
 
 class CreateMemeHandler(webapp2.RequestHandler):
