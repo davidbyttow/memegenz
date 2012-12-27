@@ -12,6 +12,7 @@ from google.appengine.api import users
 from google.appengine.api.images import Image
 from google.appengine.ext import db
 from helpers import template_helper
+from helpers.obj import Expando
 from model.meme_template import MemeTemplate
 
 
@@ -29,25 +30,19 @@ class GetTemplatesHandler(webapp2.RequestHandler):
     if cursor:
       q.with_cursor(cursor)
 
-    data = {
-      'templates': []
-    }
-
+    templates = []
     for template in q.run(limit=count):
-      template_data = {
+      template_data = Expando({
         'name': template.name,
         'width': template.width,
-        'height': template.height,
-        # TODO(d): I don't think we want to send this down with get templates, instead just
-        # individually render the images by calling /template?name=%s with the template name.
-#        'image_data': 'data:image/png;base64,' + base64.b64encode(template.image_data),
-      }
-      data['templates'].append(template_data)
+        'height': template.height
+      })
+      templates.append(template_data)
 
-    data['cursor'] = q.cursor()
-
-    self.response.headers['Content-Type'] = 'application/json'
-    self.response.write(json.dumps(data))
+    html = template_helper.render('view_templates.html',
+      templates=templates,
+      cursor=q.cursor)
+    self.response.write(html)
 
 
 class CreateTemplateHandler(webapp2.RequestHandler):
@@ -56,19 +51,6 @@ class CreateTemplateHandler(webapp2.RequestHandler):
 
     html = template_helper.render('upload_template.html')
     self.response.write(html)
-
-
-class TemplateHandler(webapp2.RequestHandler):
-  def get(self, template_name):
-    req = self.request
-
-    meme_template = MemeTemplate.get_by_key_name(template_name)
-    if not meme_template:
-      self.error(404)
-      return
-
-    self.response.headers['Content-Type'] = 'image/png'
-    self.response.write(meme_template.image_data)
 
   def post(self):
     req = self.request
@@ -104,3 +86,16 @@ class TemplateHandler(webapp2.RequestHandler):
 
     # This should probably redirect to create meme.
     self.redirect('/template/' + key.name())
+
+
+class TemplateHandler(webapp2.RequestHandler):
+  def get(self, template_name):
+    req = self.request
+
+    meme_template = MemeTemplate.get_by_key_name(template_name)
+    if not meme_template:
+      self.error(404)
+      return
+
+    self.response.headers['Content-Type'] = 'image/png'
+    self.response.write(meme_template.image_data)

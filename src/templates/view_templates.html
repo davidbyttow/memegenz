@@ -1,0 +1,16 @@
+<%inherit file="base.html"/>
+
+% for template in templates:
+  % if loop.index % 4 == 0:
+    <div class="template-row">
+  % endif
+
+  <div class="template">
+    <img class="template-image" src="/template/${template.name}">
+    ${template.name}
+  </div>
+
+  % if loop.index % 4 == 3:
+    </div>
+  % endif
+% endfor
