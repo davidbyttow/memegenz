@@ -1,5 +1,8 @@
 <%inherit file="base.html"/>
 
-<form action="/meme" enctype="multipart/form-data" method="post">
-  <input type="submit" value="Upload"/>
-</form>
+<h1>Meme Editor</h1>
+
+<input type="text" name="editor_upper_text" id="editor_upper_text">
+<input type="text" name="editor_lower_text" id="editor_lower_text" >
+<br>
+<canvas id="meme_canvas" width="150" height="150"></canvas>

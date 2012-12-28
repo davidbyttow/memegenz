@@ -2,7 +2,6 @@
 from home import *
 from meme import *
 from template import *
-from editor import *
 
 
 ROUTES = [
