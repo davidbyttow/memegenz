@@ -5,8 +5,8 @@ from google.appengine.ext import db
 
 class Meme(db.Model):
   creator = db.EmailProperty(required=True, indexed=True)
-  create_date = db.DateProperty(required=True, indexed=True, auto_now=True)
-  create_datetime = db.DateTimeProperty(required=True, indexed=True, auto_now=True)
+  create_date = db.DateProperty(required=True, indexed=True, auto_now_add=True)
+  create_datetime = db.DateTimeProperty(required=True, indexed=True, auto_now_add=True)
   listed = db.BooleanProperty(indexed=True, default=True)
   width = db.IntegerProperty(required=True, indexed=False)
   height = db.IntegerProperty(required=True, indexed=False)
