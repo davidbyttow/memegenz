@@ -89,7 +89,6 @@ class CreateMemeHandler(webapp2.RequestHandler):
         self.error(400)
         return
       image_data = meme_template.image_data
-      logging.info('raw: ' + image_data)
       key = insert_meme(
         users.get_current_user().email(), True, template_name, image_data)
       self.redirect('/meme/' + str(key.id()))
