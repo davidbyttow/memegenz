@@ -1,1 +1,11 @@
-<img src="/images/badnewsbrian.jpg">
+<%inherit file="base.html"/>
+
+<div class="meme">
+  <img class="meme-image" src="/meme/image/${meme.id}">
+  <span class="meme-author">${meme.author}</span>
+  <span class="meme-score">
+    <a href="/vote/${meme.id}">
+      +${meme.score}
+    </a>
+  </span>
+</div>

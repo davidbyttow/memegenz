@@ -53,13 +53,6 @@ class CreateTemplateHandler(webapp2.RequestHandler):
     self.response.write(html)
 
 
-class TemplateHandler(webapp2.RequestHandler):
-  def get(self, template_name):
-    req = self.request
-
-    # TODO(d): Render template page
-
-
 class TemplateImageHandler(webapp2.RequestHandler):
   def get(self, template_name):
     req = self.request

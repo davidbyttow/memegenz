@@ -5,6 +5,7 @@ import webapp2
 
 sys.path.append(os.path.abspath('../model'))
 
+from model import meme
 from model.meme import Meme
 from model.meme_template import MemeTemplate
 
@@ -96,7 +97,21 @@ class MemeHandler(webapp2.RequestHandler):
   def get(self, meme_id):
     req = self.request
 
-    # TODO(d): render the meme page
+    meme = Meme.get_by_id(int(meme_id))
+    if not meme:
+      self.error(404)
+      return
+
+    meme_data = Expando({
+      'author': meme.creator,
+      'id': meme_id,
+      'width': meme.width,
+      'height': meme.height,
+      'score': meme.score,
+    })
+
+    html = template_helper.render('view_meme.html', meme=meme_data)
+    self.response.write(html)
 
 
 class MemeImageHandler(webapp2.RequestHandler):

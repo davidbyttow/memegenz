@@ -2,6 +2,7 @@
 from home import *
 from meme import *
 from template import *
+from vote import *
 
 
 ROUTES = [
@@ -18,10 +19,11 @@ ROUTES = [
 
   webapp2.Route(r'/template',
     handler=CreateTemplateHandler, name='create-template'),
-  webapp2.Route(r'/template/<template_name>',
-    handler=TemplateHandler, name='template'),
   webapp2.Route(r'/template/image/<template_name>',
     handler=TemplateImageHandler, name='template'),
   webapp2.Route(r'/templates',
     handler=GetTemplatesHandler, name='template-list'),
+
+  webapp2.Route(r'/vote/<meme_id:\d+>',
+    handler=VoteHandler, name='vote'),
 ]
