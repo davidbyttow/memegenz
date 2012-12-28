@@ -1,27 +1,27 @@
 
 function CanvasEditor() {
-  this.canvas = document.getElementById('meme_canvas');
+  this.canvas = document.getElementById('meme-canvas');
   this.ctx = this.canvas.getContext('2d');
   
   this.drawWrappedText = function(text, x, y, maxWidth, lineHeight) {
-          var words = text.split(' ');
-          var line = '';
+    var words = text.split(' ');
+    var line = '';
 
-          for(var n = 0; n < words.length; n++) {
-            var testLine = line + words[n] + ' ';
-            var metrics = this.ctx.measureText(testLine);
-            var testWidth = metrics.width;
-            if(testWidth > maxWidth) {
-              this.ctx.fillText(line, x, y);
-              line = words[n] + ' ';
-              y += lineHeight;
-            }
-            else {
-              line = testLine;
-            }
-          }
-          this.ctx.fillText(line, x, y);
-        }
+    for(var n = 0; n < words.length; n++) {
+      var testLine = line + words[n] + ' ';
+      var metrics = this.ctx.measureText(testLine);
+      var testWidth = metrics.width;
+      if(testWidth > maxWidth) {
+        this.ctx.fillText(line, x, y);
+        line = words[n] + ' ';
+        y += lineHeight;
+      }
+      else {
+        line = testLine;
+      }
+    }
+    this.ctx.fillText(line, x, y);
+  }
   
   this.drawUpperText = function() {
     var center_x = this.ctx.canvas.width / 2;
@@ -37,7 +37,7 @@ function CanvasEditor() {
     this.ctx.lineWidth  = 10;
     this.ctx.textAlign  = 'center';
     
-    var text = $('#editor_upper_text').val().toUpperCase();
+    var text = $('#editor-upper-text').val().toUpperCase();
     this.drawWrappedText(text, x, y, maxWidth, lineHeight);
   }
   
@@ -50,13 +50,11 @@ function CanvasEditor() {
     this.ctx.lineWidth  = 5;
     this.ctx.textAlign  = 'center';
 
-    this.drawWrappedText($('#editor_upper_text').val().toUpperCase(), center_x, this.ctx.canvas.height - 50);
+    this.drawWrappedText($('#editor-upper-text').val().toUpperCase(), center_x, this.ctx.canvas.height - 50);
   }
   
   this.draw = function() {
     if (this.canvas.getContext){
-
-
       var img = new Image();   // Create new img element
       var self = this;
       img.onload = function(){
@@ -76,11 +74,11 @@ $(function() {
   var canvasEditor = new CanvasEditor();
   canvasEditor.draw();
   
-  $("#editor_upper_text").keyup(function() {
+  $("#editor-upper-text").keyup(function() {
     canvasEditor.draw();
   });
   
-  $("#editor_lower_text").keyup(function() {
+  $("#editor-lower-text").keyup(function() {
     canvasEditor.draw();
   });
   
