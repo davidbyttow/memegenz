@@ -45,7 +45,12 @@ class GetMemesHandler(webapp2.RequestHandler):
     if count > 100:
       count = 100
 
-    q = Meme.all().order('-score')
+    order = req.get('order')
+    sort_order = '-score'
+    if order == 'recent':
+      sort_order = '-create_datetime'
+
+    q = Meme.all().order(sort_order)
 
     cursor = req.get('cursor')
     if cursor:
