@@ -1,5 +1,8 @@
+import base64
+import json
 import logging
 import os
+import re
 import sys
 import webapp2
 
@@ -15,6 +18,9 @@ from google.appengine.api.images import Image
 from google.appengine.ext import db
 from helpers import template_helper
 from helpers.obj import Expando
+
+
+DATA_URL_PATTERN = re.compile('data:image/(png|jpeg);base64,(.*)$')
 
 
 def insert_meme(creator, listed, template_name, image_data):
@@ -136,6 +142,18 @@ class MemeImageHandler(webapp2.RequestHandler):
   def post(self):
     req = self.request
 
+    data_url = req.get('image_data')
+    if not data_url:
+      self.error(400)
+      return
+
+    encoded_image_data = DATA_URL_PATTERN.match(data_url).group(2)
+    if encoded_image_data is None or len(encoded_image_data) == 0:
+      self.error(400)
+      return
+
+    image_data = base64.b64decode(encoded_image_data)
+
     creator = users.get_current_user().email()
     listed = req.get('listed', False)
     if listed:
@@ -144,10 +162,13 @@ class MemeImageHandler(webapp2.RequestHandler):
       listed = False
 
     template_name = req.get('template_name')
-    image_data = req.get('image_data')
 
     key = insert_meme(creator, listed, template_name, image_data)
-    self.redirect('/meme/image/' + str(key.id()))
+    data = {
+      'id': str(key.id())
+    }
+    self.response.headers['Content-Type'] = 'application/json'
+    self.response.write(json.dumps(data))
 
   def delete(self):
     req = self.request
