@@ -12,6 +12,7 @@ from google.appengine.api import users
 from google.appengine.api.images import Image
 from google.appengine.ext import db
 from helpers import template_helper
+from helpers.obj import Expando
 from model.meme_template import MemeTemplate
 
 
@@ -29,25 +30,19 @@ class GetTemplatesHandler(webapp2.RequestHandler):
     if cursor:
       q.with_cursor(cursor)
 
-    data = {
-      'templates': []
-    }
-
+    templates = []
     for template in q.run(limit=count):
-      template_data = {
+      template_data = Expando({
         'name': template.name,
         'width': template.width,
-        'height': template.height,
-        # TODO(d): I don't think we want to send this down with get templates, instead just
-        # individually render the images by calling /template?name=%s with the template name.
-#        'image_data': 'data:image/png;base64,' + base64.b64encode(template.image_data),
-      }
-      data['templates'].append(template_data)
+        'height': template.height
+      })
+      templates.append(template_data)
 
-    data['cursor'] = q.cursor()
-
-    self.response.headers['Content-Type'] = 'application/json'
-    self.response.write(json.dumps(data))
+    html = template_helper.render('view_templates.html',
+      templates=templates,
+      cursor=q.cursor)
+    self.response.write(html)
 
 
 class CreateTemplateHandler(webapp2.RequestHandler):
@@ -59,6 +54,13 @@ class CreateTemplateHandler(webapp2.RequestHandler):
 
 
 class TemplateHandler(webapp2.RequestHandler):
+  def get(self, template_name):
+    req = self.request
+
+    # TODO(d): Render template page
+
+
+class TemplateImageHandler(webapp2.RequestHandler):
   def get(self, template_name):
     req = self.request
 
@@ -89,8 +91,6 @@ class TemplateHandler(webapp2.RequestHandler):
     if (image.width > 800):
       width = 800
       height = image.height * scalar
-    else:
-      image.resize(image.width, image.height)
     image_data = images.resize(image_data, width, height, images.PNG)
 
     meme_template = MemeTemplate(
@@ -103,4 +103,4 @@ class TemplateHandler(webapp2.RequestHandler):
     key = meme_template.put()
 
     # This should probably redirect to create meme.
-    self.redirect('/template/' + key.name())
+    self.redirect('/meme?template_name=' + key.name())

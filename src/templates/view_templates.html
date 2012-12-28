@@ -1,0 +1,20 @@
+<%inherit file="base.html"/>
+
+<h2>Select a Meme Template</h2>
+
+% for template in templates:
+  % if loop.index % 4 == 0:
+    <div class="template-row">
+  % endif
+
+  <div class="template-thumb">
+    <a href="/meme?template_name=${template.name}">
+      <img class="template-image" src="/template/image/${template.name}">
+    </a>
+    <span class="template-name">${template.name}</span>
+  </div>
+
+  % if loop.index % 4 == 3:
+    </div>
+  % endif
+% endfor
