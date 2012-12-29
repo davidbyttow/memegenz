@@ -9,10 +9,12 @@
   <div class="editor-controls">
     <form action="/meme/image" enctype="multipart/form-data" method="post">
       <label>Top Text</label>
-      <input type="text" name="editor-upper-text" id="editor-upper-text">
+      <input type="text" name="editor-upper-text" id="editor-upper-text"
+          maxLength="100">
 
       <label>Bottom Text</label>
-      <input type="text" name="editor-lower-text" id="editor-lower-text" >
+      <input type="text" name="editor-lower-text" id="editor-lower-text"
+          maxLength="100">
 
       <input type="submit" id="editor-submit-button" value="Create Meme"/>
     </form>
