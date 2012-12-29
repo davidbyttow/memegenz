@@ -12,11 +12,11 @@ from model import meme
 from model.meme import Meme
 from model.meme_template import MemeTemplate
 
-from google.appengine.api import images
 from google.appengine.api import users
 from google.appengine.api.images import Image
 from google.appengine.ext import db
 from helpers import template_helper
+from helpers import images
 from helpers.obj import Expando
 
 
@@ -24,22 +24,14 @@ DATA_URL_PATTERN = re.compile('data:image/(png|jpeg);base64,(.*)$')
 
 
 def insert_meme(creator, listed, template_name, image_data):
-  # Create the image and transform it to a PNG.
-  image = Image(image_data=image_data)
-  width = image.width
-  height = image.height
-  if (image.width > 800):
-    width = 800
-    height = image.height * scalar
-  image_data = images.resize(image_data, width, height, images.PNG)
-
+  (image_data, width, height) = images.resize_image(image_data)
   meme = Meme(
     creator=creator,
     listed=listed,
     image_data=db.Blob(image_data),
     template_name=template_name,
-    height=image.height,
-    width=image.width)
+    height=height,
+    width=width)
   return meme.put()
 
 

@@ -2,8 +2,8 @@
 var INITIAL_TEXT_HEIGHT = 50;
 var TEXT_STEP_SIZE = 5;
 var MIN_TEXT_HEIGHT = 30;
-var PADDING_X = 20;
-var PADDING_Y = 20;
+var PADDING_X = 10;
+var PADDING_Y = 10;
 var MAX_LINES = 3;
 
 function getQueryParam(name) {
@@ -20,6 +20,7 @@ function initFont(context) {
   context.strokeStyle = 'black';
   context.lineWidth = 2;
   context.textAlign = 'center';
+  context.textBaseline = 'top';
 }
 
 function CanvasEditor() {
@@ -34,19 +35,8 @@ function CanvasEditor() {
     this.context.strokeText(text, x, y);
   };
 
-  this.drawText = function(text, y, alignBottom) {
-    if (!text) {
-      return;
-    }
-
-    initFont(this.context);
-
-    var maxWidth = this.canvas.width - (PADDING_X * 2);
-
-    // First count the number of lines we need in order to select
-    // an ideal font size.
+  this.countLines = function(words, maxWidth) {
     var lines = 1;
-    var words = text.split(' ');
     var line = '';
     for (var i = 0; i < words.length; ++i) {
       var metrics = this.context.measureText(line + words[i]);
@@ -57,23 +47,39 @@ function CanvasEditor() {
       }
       line += words[i] + ' ';
     }
+    return lines;
+  }
 
+  this.drawText = function(text, y, alignBottom) {
+    if (!text) {
+      return;
+    }
+
+    initFont(this.context);
+    var x = this.context.canvas.width / 2;
+    var maxWidth = this.canvas.width - (PADDING_X * 2);
+    var words = text.split(' ');
+
+    // First count the number of lines we need in order to select
+    // an ideal font size.
+    var lines = this.countLines(words, maxWidth);
+
+    // Setup font sizes based on initial line count
     lineHeight = INITIAL_TEXT_HEIGHT - TEXT_STEP_SIZE * (lines - 1);
     lineHeight = Math.max(lineHeight, MIN_TEXT_HEIGHT);
     this.context.font = lineHeight + 'px impact';
-    
-    line = '';
-    var x = this.context.canvas.width / 2;
-
-    var offsetY = 0;
     if (alignBottom) {
-      offsetY = -lineHeight * (lines - 1) / 2;
-    } else {
-      offsetY = lineHeight;
+      this.context.textBaseline = 'bottom';
     }
 
-    y += offsetY;
+    // Recount to get actual size for the offset.
+    lines = this.countLines(words, maxWidth);
+    if (alignBottom) {
+      y -= lineHeight * (lines - 1);
+    }
 
+    // Now draw the actual lines.
+    var line = '';
     for (var i = 0; i < words.length; ++i) {
       var metrics = this.context.measureText(line + words[i]);
       var lineWidth = metrics.width;
@@ -82,7 +88,6 @@ function CanvasEditor() {
         y += lineHeight;
         line = '';
       }
-
       line += words[i] + ' ';
     }
     if (line) {
@@ -99,7 +104,7 @@ function CanvasEditor() {
   this.drawLowerText = function() {
     var text = $('#editor-lower-text').val().toUpperCase();
     this.drawText(
-      text, this.canvas.height - PADDING_Y * 2, true);
+      text, this.canvas.height - PADDING_Y, true);
     this.lastLowerText = text;
   };
   
@@ -117,8 +122,8 @@ function CanvasEditor() {
     img.src = '/template/image/' + self.templateName;
   };
 
-  this.contextetDataUrl = function() {
-    return this.context.canvas.toDataURL('image/png');
+  this.getDataUrl = function() {
+    return this.canvas.toDataURL('image/png');
   }
 }
 
@@ -137,7 +142,6 @@ $(function() {
   $('#editor-submit-button').click(function() {
     try {
       var dataUrl = canvasEditor.getDataUrl();
-
       $.post('/meme/image', {
         listed: true,
         template_name: canvasEditor.templateName,

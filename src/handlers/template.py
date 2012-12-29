@@ -7,11 +7,11 @@ import webapp2
 
 sys.path.append(os.path.abspath('../model'))
 
-from google.appengine.api import images
 from google.appengine.api import users
 from google.appengine.api.images import Image
 from google.appengine.ext import db
 from helpers import template_helper
+from helpers import images
 from helpers.obj import Expando
 from model.meme_template import MemeTemplate
 
@@ -77,22 +77,15 @@ class TemplateImageHandler(webapp2.RequestHandler):
       self.error(400)
       return
 
-    # Create an image in order to get the width and height
-    image = Image(image_data=image_data)
-    width = image.width
-    height = image.height
-    if (image.width > 800):
-      width = 800
-      height = image.height * scalar
-    image_data = images.resize(image_data, width, height, images.PNG)
+    (image_data, width, height) = images.resize_image(image_data)
 
     meme_template = MemeTemplate(
       key_name=template_name,
       creator=creator,
       image_data=db.Blob(image_data),
       name=template_name,
-      height=image.height,
-      width=image.width)
+      height=height,
+      width=width)
     key = meme_template.put()
 
     # This should probably redirect to create meme.
