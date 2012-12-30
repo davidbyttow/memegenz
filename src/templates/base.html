@@ -3,32 +3,35 @@
   <head>
     <script src="/js/jquery.js"></script>
     <script src="/js/main.js"></script>
+    <link rel="stylesheet" type="text/css" href="/style/main.css">
   </head>
   <body>
-    <div class="header">
-      <%block name="header">
-        <h1>Memegen</h1>
-      </%block>
-    </div>
+    <div class="page">
+      <div class="header">
+        <%block name="header">
+        </%block>
+      </div>
 
-    <div class="leftnav">
-      <%block name="leftnav">
-        <ul>
-          <li><a href="/templates">Create Meme</a></li>
-          <li><a href="/memes">Top Memes</a></li>
-          <li><a href="/memes?order=recent">Recent Memes</a></li>
-          <li><a href="/me">My Memes</a></li>
-          <li><a href="/template">Upload Meme Template</a></li>
-        </ul>
-      </%block>
-    </div>
+      <div class="nav">
+        <%block name="nav">
+          <div class="left">
+            <a href="/memes">Top Memes</a>
+            <a href="/memes?order=recent">Recent Memes</a>
+          </div>
+          <div class="right">
+            <a href="/me">My Memes</a>
+            <a href="/templates">Create Meme</a>
+          </div>
+        </%block>
+      </div>
 
-    <div class="body">
-      ${self.body()}
-    </div>
+      <div class="body">
+        ${self.body()}
+      </div>
 
-    <div class="footer">
-      <%block name="footer"/>
+      <div class="footer">
+        <%block name="footer"/>
+      </div>
     </div>
   </body>
 </html>

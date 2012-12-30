@@ -11,9 +11,12 @@ handlers:
 
 - url: /images
   static_dir: public/images
-  
+
 - url: /js
-  static_dir: public/js  
+  static_dir: public/js
+
+- url: /style
+  static_dir: public/style
 
 - url: /.*
   script: memegenz.app

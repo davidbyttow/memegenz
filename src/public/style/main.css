@@ -1,0 +1,46 @@
+
+.page {
+  padding-top: 4px;
+  margin: 0 auto;
+  max-width: 1024px;
+}
+
+.nav {
+  height: 2em;
+  border-bottom: 1px solid gray;
+  margin-bottom: 8px;
+}
+
+.nav .left {
+  float: left;
+}
+
+.nav .right {
+  float: right;
+}
+
+.body {
+  clear: both;
+}
+
+.meme-thumb {
+  float: left;
+  margin: 4px;
+}
+
+.meme-thumb .meme-details{
+  margin-left: 4px;
+  margin-right: 4px;
+}
+
+.meme-thumb .meme-image {
+  max-height: 250px;
+}
+
+.meme-thumb .meme-author {
+  float: left;
+}
+
+.meme-thumb .meme-score {
+  float: right;
+}
