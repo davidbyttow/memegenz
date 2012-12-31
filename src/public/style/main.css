@@ -2,7 +2,7 @@
 .page {
   padding-top: 4px;
   margin: 0 auto;
-  max-width: 1024px;
+  max-width: 960px;
 }
 
 .nav {
@@ -24,7 +24,7 @@
 }
 
 .meme-thumb {
-  float: left;
+  display: inline-block;
   margin: 4px;
 }
 
@@ -32,13 +32,13 @@
   margin: 0 auto;
 }
 
-.meme-thumb .meme-details{
+.meme-thumb .meme-details {
   margin-left: 4px;
   margin-right: 4px;
 }
 
 .meme-thumb .meme-image {
-  max-height: 225px;
+  max-height: 137px;
 }
 
 .meme-thumb .meme-author {

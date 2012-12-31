@@ -4,6 +4,7 @@ import logging
 import os
 import re
 import sys
+import user
 import webapp2
 
 sys.path.append(os.path.abspath('../model'))
@@ -58,7 +59,7 @@ class GetMemesHandler(webapp2.RequestHandler):
     memes = []
     for meme in q.run(limit=count):
       meme_data = Expando({
-        'author': meme.creator,
+        'author': user.make_user_name(meme.creator),
         'id': meme.key().id(),
         'width': meme.width,
         'height': meme.height,
@@ -106,7 +107,7 @@ class MemeHandler(webapp2.RequestHandler):
       return
 
     meme_data = Expando({
-      'author': meme.creator,
+      'author': user.make_user_name(meme.creator),
       'id': meme_id,
       'width': meme.width,
       'height': meme.height,
