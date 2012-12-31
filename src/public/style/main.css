@@ -28,13 +28,17 @@
   margin: 4px;
 }
 
+.meme-row {
+  margin: 0 auto;
+}
+
 .meme-thumb .meme-details{
   margin-left: 4px;
   margin-right: 4px;
 }
 
 .meme-thumb .meme-image {
-  max-height: 250px;
+  max-height: 225px;
 }
 
 .meme-thumb .meme-author {
