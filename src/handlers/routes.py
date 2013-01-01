@@ -6,7 +6,7 @@ from vote import *
 
 
 ROUTES = [
-  webapp2.Route(r'/', handler=GetTemplatesHandler, name='home'),
+  webapp2.Route(r'/', handler=GetMemesHandler, name='home'),
 
   webapp2.Route(r'/meme',
     handler=CreateMemeHandler, name='create-meme'),

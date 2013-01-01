@@ -2,45 +2,53 @@
 .page {
   padding-top: 10px;
   margin: 0 auto;
-  max-width: 960px;
 }
 
-.nav {
-  height: 2.5em;
+.header {
+  height: 2.2em;
+  font-size: 18px;
+  margin-top: 4px;
+  margin-left: 136px;
+  vertical-align: middle;
 }
 
-.nav .left {
+.header .title {
+  padding-top: 4px;
+}
+
+.logo {
   float: left;
-  margin-left: 8px;
+  margin-right: 8px;
+}
+
+.content {
+  clear: both;
   position: relative;
 }
 
-.nav .right {
-  float: right;
+.nav {
+  float: left;
+  margin-right: 16px;
+  margin-top: 0px;
+  text-align: right;
+  width: 120px;
 }
 
 .body {
-  clear: both;
+  max-width: 80%;
+  float: left;
   background: white no-repeat;
   border-bottom: 1px solid white;
   -webkit-box-shadow: 0 0 3px #E1E1E3;
   -moz-box-shadow: 0 0 3px #e1e1e3;
   box-shadow: 0 0 3px #E1E1E3;  
-  padding: 8px;
-}
-
-.logo {
-  position: absolute;
-  left: 6px;
+  padding: 12px;
 }
 
 .create-button {
   -webkit-border-radius: 2px;
   -moz-border-radius: 2px;
-  background-color: #D14836;
-  background-image: -webkit-linear-gradient(top,#DD4B39 #D14836);
-  background-image: -moz-linear-gradient(top,#DD4B39, #D14836);
-  background-image: linear-gradient(top,#DD4B39, #D14836);
+  background-color: #1788D4;
   border: 1px solid transparent;
   border-radius: 2px;
   cursor: pointer;
@@ -51,14 +59,12 @@
   min-width: 54px;
   outline: 0;
   padding: 0 8px;
+  margin-bottom: 8px;
 }
 
 .create-button:hover {
-  background-color: #C53527;
-  background-image: -webkit-linear-gradient(top, #DD4B39 #C53527);
-  background-image: -moz-linear-gradient(top, #DD4B39, #C53527);
-  background-image: linear-gradient(top, #DD4B39, #C53527);
-  border: 1px solid #B0281A;
+  background-color: #48C5FA;
+  border: 1px solid #1788D4;
 }
 
 .create-button a {

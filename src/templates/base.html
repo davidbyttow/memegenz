@@ -10,28 +10,33 @@
   <body>
     <div class="page">
       <div class="header">
-        <%block name="header">
-          <img class="logo" src="/images/logo.png">
-        </%block>
+        <img class="logo" src="/images/logo.png">
+        <div class="title">
+          <%block name="title">
+            % if page_title is not UNDEFINED:
+              ${page_title}
+            % endif
+          </%block>
+        </div>
       </div>
 
-      <div class="nav">
-        <%block name="nav">
-          <div class="left">
+      <div class="content">
+        <div class="nav">
+          <%block name="nav">
             <div class="create-button">
               <a href="/templates">CREATE MEME</a>
             </div>
-          </div>
-          <div class="right">
-            <a href="/memes">Top Memes</a>
-            <a href="/memes?order=recent">Recent Memes</a>
-            <a href="/me">My Memes</a>
-          </div>
-        </%block>
-      </div>
+            <ul>
+              <li><a href="/memes">Top Memes</a></li>
+              <li><a href="/memes?order=recent">Recent Memes</a></li>
+              <li><a href="/me">My Memes</a></li>
+            </ul>
+          </%block>
+        </div>
 
-      <div class="body">
-        ${self.body()}
+        <div class="body">
+          ${self.body()}
+        </div>
       </div>
 
       <div class="footer">

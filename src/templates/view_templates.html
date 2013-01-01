@@ -1,11 +1,11 @@
 <%inherit file="base.html"/>
 
-<h2>Select a Meme Template</h2>
+<%block name="title">Select a Meme Template</%block>
+
 <p>
   Don't see what you need?
   <a href="/template">Upload your own meme template.</a>
 </p>
-<br>
 
 % for template in templates:
   <div class="meme-thumb">
