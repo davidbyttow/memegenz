@@ -144,7 +144,7 @@ function initEditor() {
     canvasEditor.draw();
   });
 
-  $('#editor-submit-button').click(function() {
+  $('#create-meme-button').click(function() {
     try {
       var dataUrl = canvasEditor.getDataUrl();
       $.post('/meme/image', {

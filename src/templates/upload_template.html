@@ -3,11 +3,15 @@
 <%block name="title">Upload New Template</%block>
 
 <form action="/template/image" enctype="multipart/form-data" method="post">
-  <div>
+  <div class="control">
     <label>Name:</label> <input type="text" name="template_name"/>
   </div>
-  <div>
+  <div class="control">
     <label>Image:</label> <input type="file" name="image_data"/>
   </div>
-  <input type="submit" value="Upload"/>
+  <div class="control">
+    <div class="action-button" id="upload-template-button">
+      <a>Upload Template</a>
+    </div>
+  </div>
 </form>
