@@ -1,21 +1,18 @@
 <%inherit file="base.html"/>
 
-% for meme in memes:
-  % if loop.index % 4 == 0:
-    <div class="meme-row">
-  % endif
+<h2>${page_title}</h2>
 
+<br>
+
+% for meme in memes:
   <div class="meme-thumb">
     <a href="/meme/${meme.id}">
       <img class="meme-image" src="/meme/image/${meme.id}">
     </a>
     <div class="meme-details">
-      <span class="meme-author">${meme.author}</span>
-      <span class="meme-score">+${meme.score}</span>
+      <span class="meme-author"><a href="/user/${meme.author}">${meme.author}</a></span>
+      &nbsp;&nbsp;&nbsp;
+      <span class="meme-score">${meme.score}</span>
     </div>
   </div>
-
-  % if loop.index % 4 == 3:
-    </div>
-  % endif
 % endfor

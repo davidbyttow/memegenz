@@ -3,24 +3,29 @@
   <head>
     <script src="/js/jquery.js"></script>
     <script src="/js/main.js"></script>
+    <link href="https://d1g145x70srn7h.cloudfront.net/static/b03dd4138d4ddcd4ebb7643c38562ea98707b10c/stylesheets/public.css" rel="stylesheet" type="text/css" />
     <link rel="stylesheet" type="text/css" href="/style/main.css">
+    <title>Memegen</title>
   </head>
   <body>
     <div class="page">
       <div class="header">
         <%block name="header">
+          <img class="logo" src="/images/logo.png">
         </%block>
       </div>
 
       <div class="nav">
         <%block name="nav">
           <div class="left">
+            <div class="create-button">
+              <a href="/templates">CREATE MEME</a>
+            </div>
+          </div>
+          <div class="right">
             <a href="/memes">Top Memes</a>
             <a href="/memes?order=recent">Recent Memes</a>
             <a href="/me">My Memes</a>
-          </div>
-          <div class="right">
-            <a href="/templates">Create Meme</a>
           </div>
         </%block>
       </div>

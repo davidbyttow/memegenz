@@ -1,25 +1,19 @@
 <%inherit file="base.html"/>
 
 <h2>Select a Meme Template</h2>
-
 <p>
   Don't see what you need?
   <a href="/template">Upload your own meme template.</a>
 </p>
+<br>
 
 % for template in templates:
-  % if loop.index % 4 == 0:
-    <div class="template-row">
-  % endif
-
-  <div class="template-thumb">
+  <div class="meme-thumb">
     <a href="/meme?template_name=${template.name}">
-      <img class="template-image" src="/template/image/${template.name}">
+      <img class="meme-image" src="/template/image/${template.name}">
     </a>
-    <span class="template-name">${template.name}</span>
-  </div>
-
-  % if loop.index % 4 == 3:
+    <div class="meme-details">
+      <span class="template-name">${template.name}</span>
     </div>
-  % endif
+  </div>
 % endfor

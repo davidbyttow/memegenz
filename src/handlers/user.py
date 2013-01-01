@@ -64,5 +64,9 @@ class UserHandler(webapp2.RequestHandler):
       })
       memes.append(meme_data)
 
-    html = template_helper.render('view_memes.html', memes=memes)
+    page_title = user_name + '\'s Memes'
+
+    html = template_helper.render('view_memes.html',
+      page_title=page_title,
+      memes=memes)
     self.response.write(html)

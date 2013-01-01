@@ -46,11 +46,14 @@ class GetMemesHandler(webapp2.RequestHandler):
 
     q = Meme.all()
 
+    page_title = ''
     order = req.get('order')
     if order == 'recent':
       q.order('-create_datetime')
+      page_title = 'Recent Memes'
     else:
       q.order('-create_date').order('-score')
+      page_title = 'Top Memes'
 
     cursor = req.get('cursor')
     if cursor:
@@ -67,7 +70,9 @@ class GetMemesHandler(webapp2.RequestHandler):
       })
       memes.append(meme_data)
 
-    html = template_helper.render('view_memes.html', memes=memes)
+    html = template_helper.render('view_memes.html',
+      page_title=page_title,
+      memes=memes)
     self.response.write(html)
 
 

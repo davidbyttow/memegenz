@@ -23,9 +23,9 @@ function initFont(context) {
   context.textBaseline = 'top';
 }
 
-function CanvasEditor() {
-  this.canvas = document.getElementById('meme-canvas');
-  this.context = this.canvas.getContext('2d');
+function CanvasEditor(canvasEl) {
+  this.canvasEl = canvasEl;
+  this.context = this.canvasEl.getContext('2d');
   this.templateName = getQueryParam('template_name');
   this.lastUpperText = '';
   this.lastLowerText = '';
@@ -56,8 +56,8 @@ function CanvasEditor() {
     }
 
     initFont(this.context);
-    var x = this.context.canvas.width / 2;
-    var maxWidth = this.canvas.width - (PADDING_X * 2);
+    var x = this.canvasEl.width / 2;
+    var maxWidth = this.canvasEl.width - (PADDING_X * 2);
     var words = text.split(' ');
 
     // First count the number of lines we need in order to select
@@ -104,7 +104,7 @@ function CanvasEditor() {
   this.drawLowerText = function() {
     var text = $('#editor-lower-text').val().toUpperCase();
     this.drawText(
-      text, this.canvas.height - PADDING_Y, true);
+      text, this.canvasEl.height - PADDING_Y, true);
     this.lastLowerText = text;
   };
   
@@ -112,8 +112,8 @@ function CanvasEditor() {
     var img = new Image();
     var self = this;
     img.onload = function() {
-      self.context.canvas.height = img.height;
-      self.context.canvas.width = img.width;
+      self.canvasEl.height = img.height;
+      self.canvasEl.width = img.width;
       self.context.drawImage(img, 0, 0);
 
       self.drawUpperText();
@@ -123,12 +123,17 @@ function CanvasEditor() {
   };
 
   this.getDataUrl = function() {
-    return this.canvas.toDataURL('image/png');
+    return this.canvasEl.toDataURL('image/png');
   }
 }
 
-$(function() {
-  var canvasEditor = new CanvasEditor();
+function initEditor() {
+  var canvasEl = document.getElementById('meme-canvas');
+  if (!canvasEl) {
+    return;
+  }
+
+  var canvasEditor = new CanvasEditor(canvasEl);
   canvasEditor.draw();
   
   $("#editor-upper-text").keyup(function() {
@@ -153,5 +158,8 @@ $(function() {
 
     return false;
   });
-  
+}
+
+$(function() {
+  initEditor();  
 });
