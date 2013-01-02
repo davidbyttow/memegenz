@@ -24,13 +24,14 @@ from helpers.obj import Expando
 DATA_URL_PATTERN = re.compile('data:image/(png|jpeg);base64,(.*)$')
 
 
-def insert_meme(creator, listed, template_name, image_data):
+def insert_meme(creator, listed, template_name, image_data, text):
   (image_data, width, height) = images.resize_image(image_data)
   meme = Meme(
     creator=creator,
     listed=listed,
     image_data=db.Blob(image_data),
     template_name=template_name,
+    text=text,
     height=height,
     width=width)
   return meme.put()
@@ -85,19 +86,6 @@ class CreateMemeHandler(webapp2.RequestHandler):
       self.error(400)
       return
 
-    # TODO(d): This entire next block is for testing only until the editor is ready
-    forced = req.get('forced')
-    if forced:
-      meme_template = MemeTemplate.get_by_key_name(template_name)
-      if not meme_template:
-        self.error(400)
-        return
-      image_data = meme_template.image_data
-      key = insert_meme(
-        users.get_current_user().email(), True, template_name, image_data)
-      self.redirect('/meme/' + str(key.id()))
-      return
-
     html = template_helper.render('create_meme.html')
     self.response.write(html)
 
@@ -111,15 +99,19 @@ class MemeHandler(webapp2.RequestHandler):
       self.error(404)
       return
 
+    author_name = user.make_user_name(meme.creator)
     meme_data = Expando({
-      'author': user.make_user_name(meme.creator),
+      'author': author_name,
       'id': meme_id,
       'width': meme.width,
       'height': meme.height,
       'score': meme.score,
     })
 
-    html = template_helper.render('view_meme.html', meme=meme_data)
+    page_title = meme.template_name + ' Meme by ' + author_name
+    html = template_helper.render('view_meme.html',
+      page_title=page_title,
+      meme=meme_data)
     self.response.write(html)
 
 
@@ -145,6 +137,17 @@ class MemeImageHandler(webapp2.RequestHandler):
       self.error(400)
       return
 
+    bottom_text = req.get('upper_text')
+    logging.info(bottom_text)
+    upper_text = req.get('lower_text')
+    logging.info(upper_text)
+    texts =[]
+    if bottom_text:
+      texts.append(bottom_text)
+    if upper_text:
+      texts.append(upper_text)
+    text = '\n'.join(texts)
+
     encoded_image_data = DATA_URL_PATTERN.match(data_url).group(2)
     if encoded_image_data is None or len(encoded_image_data) == 0:
       self.error(400)
@@ -161,7 +164,7 @@ class MemeImageHandler(webapp2.RequestHandler):
 
     template_name = req.get('template_name')
 
-    key = insert_meme(creator, listed, template_name, image_data)
+    key = insert_meme(creator, listed, template_name, image_data, text)
     data = {
       'id': str(key.id())
     }

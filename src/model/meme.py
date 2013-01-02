@@ -14,6 +14,7 @@ class Meme(db.Model):
   template_name = db.StringProperty(required=True, indexed=True)
   voters = db.StringListProperty(default=[])
   score = db.IntegerProperty(indexed=True, default=0)
+  text = db.StringProperty(indexed=True, multiline=True)
 
 
 @db.transactional

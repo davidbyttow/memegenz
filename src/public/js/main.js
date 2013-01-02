@@ -23,6 +23,14 @@ function initFont(context) {
   context.textBaseline = 'top';
 }
 
+function getUpperText() {
+  return $('#editor-upper-text').val()
+}
+
+function getLowerText() {
+  return $('#editor-lower-text').val()
+}
+
 function CanvasEditor(canvasEl) {
   this.canvasEl = canvasEl;
   this.context = this.canvasEl.getContext('2d');
@@ -96,13 +104,13 @@ function CanvasEditor(canvasEl) {
   };
   
   this.drawUpperText = function() {
-    var text = $('#editor-upper-text').val().toUpperCase();
+    var text = getUpperText().toUpperCase();
     this.drawText(text, PADDING_Y);
     this.lastUpperText = text;
   };
   
   this.drawLowerText = function() {
-    var text = $('#editor-lower-text').val().toUpperCase();
+    var text = getLowerText().toUpperCase();
     this.drawText(
       text, this.canvasEl.height - PADDING_Y, true);
     this.lastLowerText = text;
@@ -148,6 +156,8 @@ function initEditor() {
     try {
       var dataUrl = canvasEditor.getDataUrl();
       $.post('/meme/image', {
+        upper_text: getUpperText(),
+        lower_text: getLowerText(),
         listed: true,
         template_name: canvasEditor.templateName,
         image_data: dataUrl
