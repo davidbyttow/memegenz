@@ -13,22 +13,22 @@
         ${meme.score}
       </a>
     </div>
-    <div class="action-button gray">
-      <a class="id-create-meme-from-template" data-id="${meme.template_name}">
-        Create From Template
-      </a>
-    </div>
-    % if meme.is_owner:
-      <div class="action-button gray">
-        <a class="id-delete-meme" data-id="${meme.id}">
-          Delete Meme
-        </a>
-      </div>
-    % endif
   </div>
 </div>
 
 <div class="clear">
+  <div class="action-button gray">
+    <a class="id-create-meme-from-template" data-id="${meme.template_name}">
+      Create From Template
+    </a>
+  </div>
+  % if meme.is_owner:
+    <div class="action-button red">
+      <a class="id-delete-meme" data-id="${meme.id}">
+        Delete Meme
+      </a>
+    </div>
+  % endif
   <p>
     Like this meme?
     <a href="/meme?template_name=${meme.template_name}">Create your own</a>

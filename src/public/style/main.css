@@ -77,6 +77,10 @@ input {
   color: #444;
 }
 
+.action-button a {
+  color: #444;
+}
+
 .action-button:hover {
   background-color: #F8F8F8;
   border: 1px solid #C6C6C6;  
@@ -91,6 +95,21 @@ input {
 .action-button.blue:hover {
   background-color: #48C5FA;
   border: 1px solid #1788D4;
+}
+
+.action-button.red {
+  background-color: #D14836;
+  border: 1px solid transparent;
+  color: white;
+}
+
+.action-button.red:hover {
+  background-color: #C53727;
+  border: 1px solid #B0281A;
+}
+
+.action-button.red a {
+  color: white;
 }
 
 .meme-thumb {
