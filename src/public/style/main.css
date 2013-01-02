@@ -5,6 +5,9 @@ input {
   padding: 2px;
 }
 
+.clear {
+  clear: both;
+}
 
 .page {
   padding-top: 10px;
@@ -71,9 +74,6 @@ input {
   font-size: 11px;
   font-weight: bold;
   outline: 0;
-}
-
-.action-button a {
   color: #444;
 }
 
@@ -85,15 +85,12 @@ input {
 .action-button.blue {
   background-color: #1788D4;
   border: 1px solid transparent;
+  color: white;
 }
 
 .action-button.blue:hover {
   background-color: #48C5FA;
   border: 1px solid #1788D4;
-}
-
-.action-button.blue a {
-  color: white;
 }
 
 .meme-thumb {
@@ -119,6 +116,22 @@ input {
 }
 
 .meme-thumb .meme-score {
+}
+
+.meme {
+  float: left;
+}
+
+.meme .meme-image {
+  -webkit-box-shadow: 1px 1px 8px 1px #CCCCCC;
+  -moz-box-shadow: 1px 1px 8px 1px #CCCCCC;
+  box-shadow: 1px 1px 8px 1px #CCCCCC;
+}
+
+.meme-view .meme-details {
+  float: left;
+  margin-left: 10px;
+  width: 200px;
 }
 
 .editor-canvas {

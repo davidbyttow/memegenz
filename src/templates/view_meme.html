@@ -1,18 +1,37 @@
 <%inherit file="base.html"/>
 
-<div class="meme">
-  <img class="meme-image" src="/meme/image/${meme.id}">
-  <span class="meme-author">${meme.author}</span>
-  <span class="meme-score">
-    <a href="/vote/${meme.id}">
-      +${meme.score}
-    </a>
-  </span>
-  % if meme.is_owner:
-    <div class="action-button gray">
-      <a class="id-delete-meme" data-id="${meme.id}">
-        Delete Meme
+<div class="meme-view">
+  <div class="meme">
+    <img class="meme-image" src="/meme/image/${meme.id}"
+        width="${meme.width}" height="${meme.height}">
+  </div>
+  <div class="meme-details">
+    <div class="meme-author">Author: ${meme.author}</div>
+    <div class="meme-score">
+      Score:
+      <a href="/vote/${meme.id}">
+        ${meme.score}
       </a>
     </div>
-  % endif
+    <div class="action-button gray">
+      <a class="id-create-meme-from-template" data-id="${meme.template_name}">
+        Create From Template
+      </a>
+    </div>
+    % if meme.is_owner:
+      <div class="action-button gray">
+        <a class="id-delete-meme" data-id="${meme.id}">
+          Delete Meme
+        </a>
+      </div>
+    % endif
+  </div>
+</div>
+
+<div class="clear">
+  <p>
+    Like this meme?
+    <a href="/meme?template_name=${meme.template_name}">Create your own</a>
+    from this template.
+  </p>
 </div>

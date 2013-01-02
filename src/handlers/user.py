@@ -13,22 +13,7 @@ from google.appengine.api import users
 from google.appengine.api.images import Image
 from google.appengine.ext import db
 from helpers import template_helper
-from helpers.obj import Expando
-
-
-def is_dev_mode():
-  return os.environ['SERVER_SOFTWARE'].startswith('Development')
-
-def make_user_email(user_name):
-  if user_name.find('@') != -1:
-    return user_name
-  if is_dev_mode():
-    return user_name + '@example.com'
-  return user_name + '@squareup.com'
-
-
-def make_user_name(user_email):
-  return user_email.split('@')[0]
+from helpers import utils
 
 
 class MeHandler(webapp2.RequestHandler):
@@ -45,7 +30,7 @@ class UserHandler(webapp2.RequestHandler):
       count = 100
 
     # TODO(d): Super hack.
-    user_email = make_user_email(user_name)
+    user_email = utils.make_user_email(user_name)
 
     q = Meme.all().order('-score').filter('creator', user_email)
 
@@ -55,14 +40,7 @@ class UserHandler(webapp2.RequestHandler):
 
     memes = []
     for meme in q.run(limit=count):
-      meme_data = Expando({
-        'author': user_name,
-        'id': meme.key().id(),
-        'width': meme.width,
-        'height': meme.height,
-        'score': meme.score,
-      })
-      memes.append(meme_data)
+      memes.append(meme.create_data())
 
     page_title = user_name + '\'s Memes'
 

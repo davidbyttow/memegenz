@@ -182,6 +182,10 @@ function initEditor() {
 }
 
 function initControls() {
+  $('.id-create-meme').click(safeHandler(function() {
+    window.location = '/templates';
+  }));
+
   $('.id-delete-meme').click(safeHandler(function() {
     var id = $(this).attr('data-id');
 

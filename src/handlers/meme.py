@@ -15,6 +15,7 @@ from google.appengine.ext import db
 from helpers import template_helper
 from helpers import images
 from helpers import randoms
+from helpers import utils
 from helpers.obj import Expando
 from model import meme
 from model.meme import Meme
@@ -24,10 +25,20 @@ from model.meme_template import MemeTemplate
 DATA_URL_PATTERN = re.compile('data:image/(png|jpeg);base64,(.*)$')
 
 
+def generate_meme_key_name():
+  key_name = randoms.randomString(5)
+  while Meme.get_by_key_name(key_name):
+    key_name = randoms.randomString(5)
+  return key_name
+
+
 def insert_meme(creator, listed, template_name, image_data, text):
   (image_data, width, height) = images.resize_image(image_data)
 
+  key_name = generate_meme_key_name()
+
   meme = Meme(
+    key_name=key_name,
     creator=creator,
     listed=listed,
     image_data=db.Blob(image_data),
@@ -36,11 +47,6 @@ def insert_meme(creator, listed, template_name, image_data, text):
     height=height,
     width=width)
   return meme.put()
-
-
-def is_meme_owner(meme):
-  user_email = users.get_current_user().email()
-  return meme.creator == user_email
 
 
 class GetMemesHandler(webapp2.RequestHandler):
@@ -69,16 +75,7 @@ class GetMemesHandler(webapp2.RequestHandler):
 
     memes = []
     for meme in q.run(limit=count):
-      logging.info(randoms.randomString(5))
-      meme_data = Expando({
-        'author': user.make_user_name(meme.creator),
-        'is_owner': is_meme_owner(meme),
-        'id': meme.key().id(),
-        'width': meme.width,
-        'height': meme.height,
-        'score': meme.score,
-      })
-      memes.append(meme_data)
+      memes.append(meme.create_data())
 
     html = template_helper.render('view_memes.html',
       page_title=page_title,
@@ -103,19 +100,20 @@ class MemeHandler(webapp2.RequestHandler):
   def get(self, meme_id):
     req = self.request
 
-    meme = Meme.get_by_id(int(meme_id))
+    meme = Meme.get_by_key_name(meme_id)
     if not meme:
       self.error(404)
       return
 
-    author_name = user.make_user_name(meme.creator)
+    author_name = utils.make_user_name(meme.creator)
     meme_data = Expando({
       'author': author_name,
-      'is_owner': is_meme_owner(meme),
+      'is_owner': meme.is_owner(),
       'id': meme_id,
       'width': meme.width,
       'height': meme.height,
       'score': meme.score,
+      'template_name': meme.template_name,
     })
 
     page_title = meme.template_name + ' Meme by ' + author_name
@@ -131,7 +129,7 @@ class MemeImageHandler(webapp2.RequestHandler):
 
     # If there's a meme id, render it.
     # TODO(d): Guard against non-integer ids
-    meme = Meme.get_by_id(int(meme_id))
+    meme = Meme.get_by_key_name(meme_id)
     if not meme:
       self.error(404)
       return
@@ -170,7 +168,7 @@ class MemeImageHandler(webapp2.RequestHandler):
 
     key = insert_meme(creator, listed, template_name, image_data, text)
     data = {
-      'id': str(key.id())
+      'id': key.name()
     }
     self.response.headers['Content-Type'] = 'application/json'
     self.response.write(json.dumps(data))
@@ -181,12 +179,12 @@ class DeleteMemeHandler(webapp2.RequestHandler):
 
     # If there's a meme id, render it.
     # TODO(d): Guard against non-integer ids
-    meme = Meme.get_by_id(int(meme_id))
+    meme = Meme.get_by_key_name(meme_id)
     if not meme:
       self.error(404)
       return
 
-    if not is_meme_owner(meme):
+    if not meme.is_owner():
       self.error(400)
       return
 

@@ -10,14 +10,14 @@ ROUTES = [
 
   webapp2.Route(r'/meme',
     handler=CreateMemeHandler, name='create-meme'),
-  webapp2.Route(r'/meme/<meme_id:\d+>',
-    handler=MemeHandler, name='meme'),
-  webapp2.Route(r'/meme/delete/<meme_id:\d+>',
+  webapp2.Route(r'/meme/delete/<meme_id>',
     handler=DeleteMemeHandler, name='delete-meme'),
   webapp2.Route(r'/meme/image',
-    handler=MemeImageHandler, name='meme-image'),
-  webapp2.Route(r'/meme/image/<meme_id:\d+>',
     handler=MemeImageHandler, name='create-meme-image'),
+  webapp2.Route(r'/meme/image/<meme_id>',
+    handler=MemeImageHandler, name='meme-image'),
+  webapp2.Route(r'/meme/<meme_id>',
+    handler=MemeHandler, name='meme'),
   webapp2.Route(r'/memes',
     handler=GetMemesHandler, name='meme-list'),
 
@@ -35,6 +35,6 @@ ROUTES = [
   webapp2.Route(r'/user/<user_name>',
     handler=UserHandler, name='user'),
 
-  webapp2.Route(r'/vote/<meme_id:\d+>',
+  webapp2.Route(r'/vote/<meme_id>',
     handler=VoteHandler, name='vote'),
 ]

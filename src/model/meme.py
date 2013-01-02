@@ -1,6 +1,9 @@
 import datetime
 
+from google.appengine.api import users
 from google.appengine.ext import db
+from helpers.obj import Expando
+from helpers import utils
 
 
 class Meme(db.Model):
@@ -16,10 +19,25 @@ class Meme(db.Model):
   score = db.IntegerProperty(indexed=True, default=0)
   text = db.StringProperty(indexed=True, multiline=True)
 
+  def create_data(self):
+    meme_data = Expando({
+      'author': utils.make_user_name(self.creator),
+      'is_owner': self.is_owner(),
+      'id': self.key().name(),
+      'width': self.width,
+      'height': self.height,
+      'score': self.score,
+    })
+    return meme_data
+
+  def is_owner(self):
+    user_email = users.get_current_user().email()
+    return self.creator == user_email
+
 
 @db.transactional
 def vote_for_meme(meme_id, voter):
-  meme = Meme.get_by_id(int(meme_id))
+  meme = Meme.get_by_key_name(meme_id)
   if not meme:
     return;
   if voter in meme.voters:
