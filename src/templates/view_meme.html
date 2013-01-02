@@ -8,4 +8,11 @@
       +${meme.score}
     </a>
   </span>
+  % if meme.is_owner:
+    <div class="action-button gray">
+      <a class="id-delete-meme" data-id="${meme.id}">
+        Delete Meme
+      </a>
+    </div>
+  % endif
 </div>

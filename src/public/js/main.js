@@ -23,12 +23,27 @@ function initFont(context) {
   context.textBaseline = 'top';
 }
 
+function safeHandler(func) {
+  return function() {
+    try {
+      func.apply(this, arguments);
+    } catch (e) {
+      console.error(e);
+    }
+    return false;
+  };
+}
+
 function getUpperText() {
-  return $('#editor-upper-text').val()
+  return $('#editor-upper-text').val();
 }
 
 function getLowerText() {
-  return $('#editor-lower-text').val()
+  return $('#editor-lower-text').val();
+}
+
+function isListed() {
+  return !$('#unlist-meme-checkbox').prop('checked');
 }
 
 function CanvasEditor(canvasEl) {
@@ -152,24 +167,35 @@ function initEditor() {
     canvasEditor.draw();
   });
 
-  $('#create-meme-button').click(function() {
-    try {
-      var dataUrl = canvasEditor.getDataUrl();
-      $.post('/meme/image', {
-        upper_text: getUpperText(),
-        lower_text: getLowerText(),
-        listed: true,
-        template_name: canvasEditor.templateName,
-        image_data: dataUrl
-      }, function(data) {
-        window.location = '/meme/' + data.id
-      }, 'json');
-    } catch (ignored) {}
+  $('#create-meme-button').click(safeHandler(function() {
+    var dataUrl = canvasEditor.getDataUrl();
+    $.post('/meme/image', {
+      upper_text: getUpperText(),
+      lower_text: getLowerText(),
+      listed: isListed(),
+      template_name: canvasEditor.templateName,
+      image_data: dataUrl
+    }, function(data) {
+      window.location = '/meme/' + data.id
+    }, 'json');
+  }));
+}
 
-    return false;
-  });
+function initControls() {
+  $('.id-delete-meme').click(safeHandler(function() {
+    var id = $(this).attr('data-id');
+
+    // TODO(d): Ask for confirmation.
+    
+    // TODO(d): Use DELETE semantics
+    $.post('/meme/delete/' + id, {},
+    function(data) {
+      window.location = '/memes?order=recent';
+    }, 'json');
+  }));
 }
 
 $(function() {
-  initEditor();  
+  initEditor();
+  initControls();
 });

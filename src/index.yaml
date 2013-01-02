@@ -22,3 +22,17 @@ indexes:
   - name: creator
   - name: score
     direction: desc
+
+- kind: Meme
+  properties:
+  - name: listed
+  - name: create_date
+    direction: desc
+  - name: score
+    direction: desc
+
+- kind: Meme
+  properties:
+  - name: listed
+  - name: create_datetime
+    direction: desc

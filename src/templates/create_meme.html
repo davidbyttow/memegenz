@@ -10,13 +10,16 @@
     <form action="/meme/image" enctype="multipart/form-data" method="post">
       <div class="control">
         <label>Top Text</label>
-        <input type="text" name="editor-upper-text" id="editor-upper-text"
+        <input type="text" id="editor-upper-text"
             maxLength="100">
       </div>
       <div class="control">
         <label>Bottom Text</label>
-        <input type="text" name="editor-lower-text" id="editor-lower-text"
+        <input type="text" id="editor-lower-text"
             maxLength="100">
+      </div>
+      <div class="control">
+        Unlisted <input type="checkbox" id="unlist-meme-checkbox">
       </div>
       <div class="control">
         <div class="action-button" id="create-meme-button">
