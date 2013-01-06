@@ -65,18 +65,21 @@ class GetMemesHandler(webapp2.RequestHandler):
     order = req.get('order')
     if order == 'recent':
       q.order('-create_datetime')
-      page_title = 'Recent Memes'
+      page_title = 'Recent'
     else:
       q.order('-create_date').order('-score')
-      page_title = 'Top Memes'
+      page_title = 'Top'
 
     q.filter('listed', True)
     template_name = req.get('template_name')
     if template_name:
+      page_title += ' ' + template_name
       q.filter('template_name', template_name)
     cursor = req.get('cursor')
     if cursor:
       q.with_cursor(cursor)
+
+    page_title += ' Memes'
 
     memes = []
     for meme in q.run(limit=count):

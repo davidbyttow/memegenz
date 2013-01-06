@@ -190,12 +190,21 @@ function initControls() {
     var id = $(this).attr('data-id');
 
     // TODO(d): Ask for confirmation.
+    var result = confirm("Delete this meme?");
+    if (!result) {
+      return;
+    }
     
     // TODO(d): Use DELETE semantics
     $.post('/meme/delete/' + id, {},
     function(data) {
       window.location = '/memes?order=recent';
     }, 'json');
+  }));
+
+  $('.id-create-meme-from-template').click(safeHandler(function() {
+    var id = $(this).attr('data-id');
+    window.location = '/meme?template_name=' + id;
   }));
 
   $('.id-template-name-box').on("keydown", function(e) {
