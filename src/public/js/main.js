@@ -197,6 +197,10 @@ function initControls() {
       window.location = '/memes?order=recent';
     }, 'json');
   }));
+
+  $('.id-template-name-box').on("keydown", function(e) {
+    return e.which != 32;
+  });
 }
 
 $(function() {

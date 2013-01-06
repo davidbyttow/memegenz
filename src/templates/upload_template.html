@@ -4,10 +4,14 @@
 
 <form action="/template/image" enctype="multipart/form-data" method="post">
   <div class="control">
-    <label>Name:</label> <input type="text" name="template_name"/>
+    <label>Name</label>
+    <br/>
+    <input type="text" class="id-template-name-box" name="template_name" maxLength="20"/>
   </div>
   <div class="control">
-    <label>Image:</label> <input type="file" name="image_data"/>
+    <label>Image</label>
+    <br/>
+    <input type="file" name="image_data"/>
   </div>
   <div class="control">
     <div class="action-button" id="upload-template-button">
