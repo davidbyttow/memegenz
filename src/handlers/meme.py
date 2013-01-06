@@ -136,8 +136,14 @@ class MemeImageHandler(webapp2.RequestHandler):
       self.error(404)
       return
 
+
     self.response.headers['Content-Type'] = 'image/png'
-    self.response.write(meme.image_data)
+
+    is_thumbnail = req.get('size') == 'thumbnail'
+    if is_thumbnail:
+      self.response.write(meme.thumbnail_image_data)
+    else:
+      self.response.write(meme.image_data)
 
   def post(self):
     req = self.request

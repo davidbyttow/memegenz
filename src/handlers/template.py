@@ -63,7 +63,12 @@ class TemplateImageHandler(webapp2.RequestHandler):
       return
 
     self.response.headers['Content-Type'] = 'image/png'
-    self.response.write(meme_template.image_data)
+
+    is_thumbnail = req.get('size') == 'thumbnail'
+    if is_thumbnail:
+      self.response.write(meme_template.thumbnail_image_data)
+    else:
+      self.response.write(meme_template.image_data)
 
   def post(self):
     req = self.request
