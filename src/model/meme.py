@@ -14,6 +14,7 @@ class Meme(db.Model):
   width = db.IntegerProperty(required=True, indexed=False)
   height = db.IntegerProperty(required=True, indexed=False)
   image_data = db.BlobProperty(required=True, indexed=False)
+  thumbnail_image_data = db.BlobProperty(required=True, indexed=False)
   template_name = db.StringProperty(required=True, indexed=True)
   voters = db.StringListProperty(default=[])
   score = db.IntegerProperty(indexed=True, default=0)

@@ -70,19 +70,21 @@ class TemplateImageHandler(webapp2.RequestHandler):
 
     creator = users.get_current_user().email()
     template_name = req.get('template_name')
-    image_data = req.get('image_data')
+    original_image_data = req.get('image_data')
 
     existing_template = MemeTemplate.get_by_key_name(template_name)
     if existing_template:
       self.error(400)
       return
 
-    (image_data, width, height) = images.resize_image(image_data)
+    (image_data, width, height) = images.create_image(original_image_data)
+    (thumbnail_image_data, _, _) = images.create_thumbnail_image(original_image_data)
 
     meme_template = MemeTemplate(
       key_name=template_name,
       creator=creator,
       image_data=db.Blob(image_data),
+      thumbnail_image_data=db.Blob(thumbnail_image_data),
       name=template_name,
       height=height,
       width=width)

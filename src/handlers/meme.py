@@ -32,8 +32,9 @@ def generate_meme_key_name():
   return key_name
 
 
-def insert_meme(creator, listed, template_name, image_data, text):
-  (image_data, width, height) = images.resize_image(image_data)
+def insert_meme(creator, listed, template_name, original_image_data, text):
+  (image_data, width, height) = images.create_image(original_image_data)
+  (thumbnail_image_data, _, _) = images.create_thumbnail_image(original_image_data)
 
   key_name = generate_meme_key_name()
 
@@ -42,6 +43,7 @@ def insert_meme(creator, listed, template_name, image_data, text):
     creator=creator,
     listed=listed,
     image_data=db.Blob(image_data),
+    thumbnail_image_data=db.Blob(thumbnail_image_data),
     template_name=template_name,
     text=text,
     height=height,
