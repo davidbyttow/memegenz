@@ -138,6 +138,7 @@ class MemeImageHandler(webapp2.RequestHandler):
 
 
     self.response.headers['Content-Type'] = 'image/png'
+    self.response.headers['Cache-Control'] = 'public, max-age=86400'
 
     is_thumbnail = req.get('size') == 'thumbnail'
     if is_thumbnail:
