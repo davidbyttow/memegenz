@@ -63,7 +63,7 @@ class TemplateImageHandler(webapp2.RequestHandler):
       return
 
     self.response.headers['Content-Type'] = 'image/png'
-    self.response.headers['Cache-Control'] = 'public, max-age=3600'
+    self.response.headers['Cache-Control'] = 'private, max-age=3600'
 
     is_thumbnail = req.get('size') == 'thumbnail'
     if is_thumbnail:

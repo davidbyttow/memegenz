@@ -52,6 +52,17 @@ function CanvasEditor(canvasEl) {
   this.templateName = getQueryParam('template_name');
   this.lastUpperText = '';
   this.lastLowerText = '';
+  this.image = null;
+
+  var image = new Image();
+  var self = this;
+  image.onload = function() {
+    self.canvasEl.height = image.height;
+    self.canvasEl.width = image.width;
+    self.image = image;
+    self.draw();
+  };
+  image.src = '/template/image/' + this.templateName;
 
   this.drawImpact = function(text, x, y) {
     this.context.fillText(text, x, y);
@@ -132,17 +143,12 @@ function CanvasEditor(canvasEl) {
   };
   
   this.draw = function() {
-    var img = new Image();
-    var self = this;
-    img.onload = function() {
-      self.canvasEl.height = img.height;
-      self.canvasEl.width = img.width;
-      self.context.drawImage(img, 0, 0);
-
-      self.drawUpperText();
-      self.drawLowerText();
-    };
-    img.src = '/template/image/' + self.templateName;
+    if (!this.image) {
+      return;
+    }
+    this.context.drawImage(this.image, 0, 0);
+    this.drawUpperText();
+    this.drawLowerText();
   };
 
   this.getDataUrl = function() {
@@ -157,7 +163,6 @@ function initEditor() {
   }
 
   var canvasEditor = new CanvasEditor(canvasEl);
-  canvasEditor.draw();
   
   $("#editor-upper-text").keyup(function() {
     canvasEditor.draw();
