@@ -6,27 +6,40 @@
         width="${meme.width}" height="${meme.height}">
   </div>
   <div class="meme-details">
-    <div class="meme-author">Author: ${meme.author}</div>
+    <div class="meme-author">
+      Created by
+        <a href="/user/${meme.author}">${meme.author}</a>
+      on <span class="id-timestamp">${meme.created_timestamp}</a>
+    </div>
     <div class="meme-score">
-      Score:
-      <a href="/vote/${meme.id}">
-        ${meme.score}
-      </a>
-    </div>
-  </div>
-</div>
+      % if meme.score == 1:
+        Has ${meme.score} vote.
+      % else:
+        Has ${meme.score} votes.
+      % endif
 
-<div class="clear">
-  <div class="action-button gray">
-    <a class="id-create-meme-from-template" data-id="${meme.template_name}">
-      Create From Template
-    </a>
-  </div>
-  % if meme.is_owner:
-    <div class="action-button red">
-      <a class="id-delete-meme" data-id="${meme.id}">
-        Delete Meme
+      % if not meme.has_voted:
+        <a href="/vote/${meme.id}">+1</a>
+      % endif
+    </div>
+    <p>&nbsp;</p>
+    <div class="action-button gray">
+      <a class="id-create-meme-from-template" data-id="${meme.template_name}">
+        Create From Template
       </a>
     </div>
-  % endif
+    % if meme.is_owner:
+      <div class="action-button red">
+        <a class="id-delete-meme" data-id="${meme.id}">
+          Delete Meme
+        </a>
+      </div>
+    % endif
+    <p>&nbsp;</p>
+    <div>
+      <a href="/memes?template_name=${meme.template_name}">
+        More ${meme.template_name} memes
+      </a>
+    </div>
+  </div>
 </div>

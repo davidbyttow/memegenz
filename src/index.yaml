@@ -36,3 +36,12 @@ indexes:
   - name: listed
   - name: create_datetime
     direction: desc
+
+- kind: Meme
+  properties:
+  - name: listed
+  - name: template_name
+  - name: create_date
+    direction: desc
+  - name: score
+    direction: desc

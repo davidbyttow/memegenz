@@ -24,16 +24,23 @@ class Meme(db.Model):
     meme_data = Expando({
       'author': utils.make_user_name(self.creator),
       'is_owner': self.is_owner(),
+      'created_timestamp': utils.make_timestamp(self.create_datetime),
       'id': self.key().name(),
       'width': self.width,
       'height': self.height,
       'score': self.score,
+      'template_name': self.template_name,
+      'has_voted': self.has_voted()
     })
     return meme_data
 
   def is_owner(self):
     user_email = users.get_current_user().email()
     return self.creator == user_email
+
+  def has_voted(self):
+    user_email = users.get_current_user().email()
+    return user_email in self.voters
 
 
 @db.transactional

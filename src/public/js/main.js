@@ -201,6 +201,13 @@ function initControls() {
   $('.id-template-name-box').on("keydown", function(e) {
     return e.which != 32;
   });
+
+  $('.id-timestamp').each(function() {
+    var ms = parseInt($(this).text());
+    var date = new Date(ms);
+    $(this).text(
+        date.getMonth() + 1 + '/' + date.getDate() + '/' + date.getFullYear());
+  });
 }
 
 $(function() {

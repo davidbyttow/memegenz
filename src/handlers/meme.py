@@ -71,6 +71,9 @@ class GetMemesHandler(webapp2.RequestHandler):
       page_title = 'Top Memes'
 
     q.filter('listed', True)
+    template_name = req.get('template_name')
+    if template_name:
+      q.filter('template_name', template_name)
     cursor = req.get('cursor')
     if cursor:
       q.with_cursor(cursor)
@@ -108,15 +111,7 @@ class MemeHandler(webapp2.RequestHandler):
       return
 
     author_name = utils.make_user_name(meme.creator)
-    meme_data = Expando({
-      'author': author_name,
-      'is_owner': meme.is_owner(),
-      'id': meme_id,
-      'width': meme.width,
-      'height': meme.height,
-      'score': meme.score,
-      'template_name': meme.template_name,
-    })
+    meme_data = meme.create_data()
 
     page_title = meme.template_name + ' Meme by ' + author_name
     html = template_helper.render('view_meme.html',

@@ -2,6 +2,7 @@
 import logging
 import os
 import sys
+import time
 
 from google.appengine.api import users
 
@@ -20,3 +21,6 @@ def make_user_email(user_name):
 def make_user_name(user_email):
   return user_email.split('@')[0]
 
+
+def make_timestamp(datetime):
+  return int(time.mktime(datetime.timetuple()) * 1000)
