@@ -3,6 +3,7 @@ import sys
 sys.path.append(os.path.abspath('../model'))
 
 import base64
+import datetime
 import json
 import logging
 import re
@@ -134,7 +135,6 @@ class MemeImageHandler(webapp2.RequestHandler):
       self.error(404)
       return
 
-
     self.response.headers['Content-Type'] = 'image/png'
     self.response.headers['Cache-Control'] = 'public, max-age=86400'
 
@@ -174,6 +174,12 @@ class MemeImageHandler(webapp2.RequestHandler):
     template_name = req.get('template_name')
 
     key = insert_meme(creator, listed, template_name, image_data, text)
+
+    meme_template = MemeTemplate.get_by_key_name(template_name)
+    if meme_template:
+      meme_template.last_used = datetime.datetime.now()
+      meme_template.put()
+
     data = {
       'id': key.name()
     }

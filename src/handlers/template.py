@@ -24,7 +24,7 @@ class GetTemplatesHandler(webapp2.RequestHandler):
     if count > 100:
       count = 100
 
-    q = MemeTemplate.all().order('-create_datetime')
+    q = MemeTemplate.all()
 
     cursor = req.get('cursor')
     if cursor:

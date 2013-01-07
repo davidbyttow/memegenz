@@ -11,3 +11,4 @@ class MemeTemplate(db.Model):
   height = db.IntegerProperty(required=True, indexed=False)
   image_data = db.BlobProperty(required=True, indexed=False)
   thumbnail_image_data = db.BlobProperty(required=True, indexed=False)
+  last_used = db.DateTimeProperty(indexed=True, auto_now_add=False, default=0)
