@@ -2,10 +2,13 @@
 
 <%block name="title">Select a Meme Template</%block>
 
-<p>
-  Don't see what you need?
-  <a href="/template">Upload your own meme template.</a>
-</p>
+<a href="/template">
+  <div class="action-button gray">
+    Upload New Template
+  </div>
+</a>
+
+<div class="clear"></div>
 
 % for template in templates:
   <div class="meme-thumb">
