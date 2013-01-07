@@ -23,16 +23,13 @@
       % endif
     </div>
     <p>&nbsp;</p>
-    <div class="action-button gray">
-      <a class="id-create-meme-from-template" data-id="${meme.template_name}">
-        Create From Template
-      </a>
+    <div class="action-button gray id-create-meme-from-template"
+        data-id="${meme.template_name}">
+      Create From Template
     </div>
     % if meme.is_owner:
-      <div class="action-button red">
-        <a class="id-delete-meme" data-id="${meme.id}">
-          Delete Meme
-        </a>
+      <div class="action-button red id-delete-meme" data-id="${meme.id}">
+        Delete Meme
       </div>
     % endif
     <p>&nbsp;</p>
