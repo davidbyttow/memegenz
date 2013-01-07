@@ -18,7 +18,7 @@ from helpers import utils
 
 class MeHandler(webapp2.RequestHandler):
   def get(self):
-    self.redirect('/user/' + make_user_name(users.get_current_user().email()))
+    self.redirect('/user/' + utils.make_user_name(users.get_current_user().email()))
 
 
 class UserHandler(webapp2.RequestHandler):
