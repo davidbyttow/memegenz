@@ -26,6 +26,10 @@ input {
   padding-top: 4px;
 }
 
+.error {
+  color: red;
+}
+
 .logo {
   float: left;
   margin-right: 8px;

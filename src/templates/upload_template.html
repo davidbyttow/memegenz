@@ -2,7 +2,7 @@
 
 <%block name="title">Upload New Template</%block>
 
-<form action="/template/image" enctype="multipart/form-data" method="post">
+<form id="upload-template-form" action="/template/image" enctype="multipart/form-data" method="post">
   <div class="control">
     <label>Name</label>
     <br/>
@@ -15,5 +15,8 @@
   </div>
   <div class="control">
     <input class="action-button" type="submit" value="Upload Template">
+  </div>
+  <div class="control">
+    <span class="id-error error"></span>
   </div>
 </form>

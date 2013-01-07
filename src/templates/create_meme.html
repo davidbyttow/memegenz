@@ -7,7 +7,7 @@
     <canvas id="meme-canvas" style="border: 1px solid black;"></canvas>
   </div>
   <div class="editor-controls">
-    <form action="/meme/image" enctype="multipart/form-data" method="post">
+    <form id="create-meme-form" action="/meme/image" enctype="multipart/form-data" method="post">
       <div class="control">
         <label>Top Text</label>
         <input type="text" id="editor-upper-text"
@@ -19,9 +19,7 @@
             maxLength="100">
       </div>
       <div class="control">
-        <div class="action-button" id="create-meme-button">
-          <a>Create Meme</a>
-        </div>
+        <input class="action-button id-create-meme-button" type="submit" value="Create Meme">
       </div>
     </form>
   </div>

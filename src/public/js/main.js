@@ -172,7 +172,8 @@ function initEditor() {
     canvasEditor.draw();
   });
 
-  $('#create-meme-button').click(safeHandler(function() {
+  $('#create-meme-form').submit(function(e) {
+    e.preventDefault();
     var dataUrl = canvasEditor.getDataUrl();
     $.post('/meme/image', {
       upper_text: getUpperText(),
@@ -183,10 +184,26 @@ function initEditor() {
     }, function(data) {
       window.location = '/meme/' + data.id
     }, 'json');
-  }));
+    return false;
+  });
 }
 
 function initControls() {
+  $('#upload-template-form').submit(function (e) {
+    var templateName = $('.id-template-name-box').val();
+    if (!templateName) {
+      $('.id-error').text('Template name required')
+      e.preventDefault();
+      return false;
+    }
+    var filepath = $('.id-template-file-box').val();
+    if (!filepath) {
+      $('.id-error').text('File required')
+      e.preventDefault();
+      return false;
+    }
+  });
+
   $('.id-create-meme').click(safeHandler(function() {
     window.location = '/templates';
   }));
