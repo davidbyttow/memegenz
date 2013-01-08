@@ -26,6 +26,11 @@ input {
   padding-top: 4px;
 }
 
+.help {
+  font-weight: bold;
+  font-size: 12px;
+}
+
 .error {
   color: red;
 }

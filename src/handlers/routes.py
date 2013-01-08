@@ -5,6 +5,12 @@ from user import *
 from vote import *
 
 
+class HelpHandler(webapp2.RequestHandler):
+  def get(self):
+    html = template_helper.render('what.html')
+    self.response.write(html)
+
+
 ROUTES = [
   webapp2.Route(r'/', handler=GetMemesHandler, name='home'),
 
@@ -29,6 +35,9 @@ ROUTES = [
     handler=TemplateImageHandler, name='create-template-image'),
   webapp2.Route(r'/templates',
     handler=GetTemplatesHandler, name='template-list'),
+
+  webapp2.Route(r'/help',
+    handler=HelpHandler, name='help'),
 
   webapp2.Route(r'/me',
     handler=MeHandler, name='me'),
