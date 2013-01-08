@@ -14,15 +14,6 @@ function getQueryParam(name) {
       ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
 }
 
-function initFont(context) {
-  context.fillStyle = '#FFF';
-  context.font = INITIAL_TEXT_HEIGHT + 'px impact';
-  context.strokeStyle = 'black';
-  context.lineWidth = 2;
-  context.textAlign = 'center';
-  context.textBaseline = 'top';
-}
-
 function safeHandler(func) {
   return function() {
     try {
@@ -53,6 +44,9 @@ function CanvasEditor(canvasEl) {
   this.lastUpperText = '';
   this.lastLowerText = '';
   this.image = null;
+  this.initialTextHeight = INITIAL_TEXT_HEIGHT;
+  this.textStepSize = TEXT_STEP_SIZE;
+  this.minTextHeight = MIN_TEXT_HEIGHT;
 
   var image = new Image();
   var self = this;
@@ -60,9 +54,21 @@ function CanvasEditor(canvasEl) {
     self.canvasEl.height = image.height;
     self.canvasEl.width = image.width;
     self.image = image;
+    self.initialTextHeight = Math.floor(image.height / 7);
+    self.minTextHeight = Math.floor(self.initialTextHeight * 0.6);
+    self.textStepSize =  Math.floor((self.initialTextHeight - self.minTextHeight) / 4);
     self.draw();
   };
   image.src = '/template/image/' + this.templateName;
+
+  this.initFont = function() {
+    this.context.fillStyle = '#FFF';
+    this.context.font = this.initialTextHeight + 'px impact';
+    this.context.strokeStyle = 'black';
+    this.context.lineWidth = 2;
+    this.context.textAlign = 'center';
+    this.context.textBaseline = 'top';
+  }
 
   this.drawImpact = function(text, x, y) {
     this.context.fillText(text, x, y);
@@ -89,7 +95,7 @@ function CanvasEditor(canvasEl) {
       return;
     }
 
-    initFont(this.context);
+    this.initFont();
     var x = this.canvasEl.width / 2;
     var maxWidth = this.canvasEl.width - (PADDING_X * 2);
     var words = text.split(' ');
@@ -99,8 +105,8 @@ function CanvasEditor(canvasEl) {
     var lines = this.countLines(words, maxWidth);
 
     // Setup font sizes based on initial line count
-    lineHeight = INITIAL_TEXT_HEIGHT - TEXT_STEP_SIZE * (lines - 1);
-    lineHeight = Math.max(lineHeight, MIN_TEXT_HEIGHT);
+    lineHeight = this.initialTextHeight - this.textStepSize * (lines - 1);
+    lineHeight = Math.max(lineHeight, this.minTextHeight);
     this.context.font = lineHeight + 'px impact';
     if (alignBottom) {
       this.context.textBaseline = 'bottom';
