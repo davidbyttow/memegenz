@@ -12,16 +12,19 @@
       on <span class="id-timestamp">${meme.created_timestamp}</a>
     </div>
     <div class="meme-score">
-      % if meme.score == 1:
-        Has ${meme.score} vote.
-      % else:
-        Has ${meme.score} votes.
+      % if not meme.has_voted:
+        <div class="action-button plusone id-plusone" data-id="${meme.id}">+1</div>
       % endif
 
-      % if not meme.has_voted:
-        <a href="/vote/${meme.id}">+1</a>
+      % if meme.score == 0:
+        Be the first to vote!
+      % elif meme.score == 1:
+        Has ${meme.score} <a href="#" class="id-see-voters" data-id="${meme.id}">vote</a>.
+      % else:
+        Has ${meme.score} <a href="#" class="id-see-voters" data-id="${meme.id}">votes</a>.
       % endif
     </div>
+    <div class="id-voters-container"></div>
     <p>&nbsp;</p>
     <div class="action-button gray id-create-meme-from-template"
         data-id="${meme.template_name}">

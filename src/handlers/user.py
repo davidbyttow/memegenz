@@ -32,13 +32,15 @@ class UserHandler(webapp2.RequestHandler):
     # TODO(d): Super hack.
     user_email = utils.make_user_email(user_name)
 
-    q = Meme.all().order('-score').filter('creator', user_email)
+    q = Meme.all().order('-create_datetime').filter('creator', user_email)
 
     cursor = req.get('cursor')
     if cursor:
       q.with_cursor(cursor)
 
     memes = []
+    date_buckets = []
+    date_buckets.append(memes)
     for meme in q.run(limit=count):
       memes.append(meme.create_data())
 
@@ -46,5 +48,5 @@ class UserHandler(webapp2.RequestHandler):
 
     html = template_helper.render('view_memes.html',
       page_title=page_title,
-      memes=memes)
+      date_buckets=date_buckets)
     self.response.write(html)

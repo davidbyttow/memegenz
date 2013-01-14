@@ -29,8 +29,13 @@
               CREATE MEME
             </div>
             <ul>
-              <li><a href="/memes">Top Memes</a></li>
               <li><a href="/memes?order=recent">Recent Memes</a></li>
+              <li><a href="/memes">Daily Top Memes</a></li>
+              <li><a href="/stream">Live Stream!</a></li>
+            </ul>
+            <br>
+            <ul>
+              <li><a href="/memes?order=fame">Hall of Fame</a></li>
               <li><a href="/me">My Memes</a></li>
             </ul>
             <br>
@@ -45,6 +50,21 @@
 
         <div class="body">
           ${self.body()}
+        </div>
+
+        <div class="rhs">
+          <p>Sponsored Memes</p>
+          <div class="id-meme-thumb meme-thumb">
+            <a href="http://memegenz.appspot.com/meme/sztmi">
+              <img class="meme-image" src="http://memegenz.appspot.com/meme/image/sztmi?size=thumbnail">
+            </a>
+          </div>
+          <div class="clear"></div>
+          <div class="id-meme-thumb meme-thumb">
+            <a href="http://memegenz.appspot.com/meme/tuweh">
+              <img class="meme-image" src="http://memegenz.appspot.com/meme/image/tuweh?size=thumbnail">
+            </a>
+          </div>
         </div>
       </div>
 

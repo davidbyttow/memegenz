@@ -12,20 +12,31 @@ from google.appengine.api.images import Image
 from google.appengine.ext import db
 from helpers import template_helper
 from helpers import images
+from helpers import sanitize
 from helpers.obj import Expando
 from model.meme_template import MemeTemplate
+
+
+def sort_templates(a, b):
+  l = a.name.lower()
+  r = b.name.lower()
+  if l < r:
+    return -1
+  if l == r:
+    return 0
+  return 1
 
 
 class GetTemplatesHandler(webapp2.RequestHandler):
   def get(self):
     req = self.request
 
-    count = int(req.get('count', 20))
+    count = int(req.get('count', 75))
     if count > 100:
       count = 100
 
     q = MemeTemplate.all()
-
+    q.order('-last_used')
     cursor = req.get('cursor')
     if cursor:
       q.with_cursor(cursor)
@@ -39,8 +50,11 @@ class GetTemplatesHandler(webapp2.RequestHandler):
       })
       templates.append(template_data)
 
+    sorted_templates = sorted(templates[:], sort_templates)
+
     html = template_helper.render('view_templates.html',
       templates=templates,
+      alpha_sorted_templates=sorted_templates,
       cursor=q.cursor)
     self.response.write(html)
 
@@ -75,8 +89,12 @@ class TemplateImageHandler(webapp2.RequestHandler):
     req = self.request
 
     creator = users.get_current_user().email()
-    template_name = req.get('template_name')
+    template_name = sanitize.remove_tags(req.get('template_name'))
     original_image_data = req.get('image_data')
+
+    if not template_name:
+      self.error(400)
+      return
 
     existing_template = MemeTemplate.get_by_key_name(template_name)
     if existing_template:
@@ -98,3 +116,24 @@ class TemplateImageHandler(webapp2.RequestHandler):
 
     # This should probably redirect to create meme.
     self.redirect('/meme?template_name=' + key.name())
+
+
+class DeleteTemplateHandler(webapp2.RequestHandler):
+  def post(self, template_name):
+    req = self.request
+
+    template = MemeTemplate.get_by_key_name(template_name)
+    if not template:
+      self.error(404)
+      return
+
+    if not template.is_owner():
+      self.error(400)
+      return
+
+    template.delete()
+
+    # Write an empty 200 response
+    self.response.headers['Content-Type'] = 'application/json'
+    self.response.write('{}')
+

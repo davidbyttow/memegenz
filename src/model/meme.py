@@ -53,3 +53,4 @@ def vote_for_meme(meme_id, voter):
   meme.voters.append(voter)
   meme.score = len(meme.voters)
   meme.put()
+  return meme

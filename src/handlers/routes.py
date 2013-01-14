@@ -26,9 +26,15 @@ ROUTES = [
     handler=MemeHandler, name='meme'),
   webapp2.Route(r'/memes',
     handler=GetMemesHandler, name='meme-list'),
+  webapp2.Route(r'/stream',
+    handler=MemeStreamHandler, name='meme-stream'),
+  webapp2.Route(r'/stream/poll',
+    handler=MemeStreamPollHandler, name='meme-stream-poll'),
 
   webapp2.Route(r'/template',
     handler=CreateTemplateHandler, name='create-template'),
+  webapp2.Route(r'/template/delete/<template_name>',
+    handler=DeleteTemplateHandler, name='delete-template'),
   webapp2.Route(r'/template/image',
     handler=TemplateImageHandler, name='template'),
   webapp2.Route(r'/template/image/<template_name>',
@@ -46,4 +52,6 @@ ROUTES = [
 
   webapp2.Route(r'/vote/<meme_id>',
     handler=VoteHandler, name='vote'),
+  webapp2.Route(r'/voters/<meme_id>',
+    handler=GetVotersHandler, name='votes'),
 ]

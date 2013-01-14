@@ -20,6 +20,12 @@ indexes:
 - kind: Meme
   properties:
   - name: creator
+  - name: create_datetime
+    direction: desc
+
+- kind: Meme
+  properties:
+  - name: creator
   - name: score
     direction: desc
 
@@ -40,8 +46,46 @@ indexes:
 - kind: Meme
   properties:
   - name: listed
+  - name: create_datetime
+    direction: desc
+  - name: score
+
+- kind: Meme
+  properties:
+  - name: listed
+  - name: create_datetime
+    direction: desc
+  - name: score
+    direction: desc
+
+- kind: Meme
+  properties:
+  - name: listed
+  - name: score
+    direction: desc
+
+- kind: Meme
+  properties:
+  - name: listed
+  - name: score
+    direction: desc
+  - name: create_datetime
+    direction: desc
+
+- kind: Meme
+  properties:
+  - name: listed
   - name: template_name
   - name: create_date
     direction: desc
   - name: score
+    direction: desc
+
+- kind: Meme
+  properties:
+  - name: listed
+  - name: template_name
+  - name: score
+    direction: desc
+  - name: create_datetime
     direction: desc
