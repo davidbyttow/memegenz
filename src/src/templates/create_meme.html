@@ -1,0 +1,45 @@
+<%inherit file="base.html"/>
+
+<%block name="title">Create Meme</%block>
+
+<div class="editor">
+  <div class="editor-canvas">
+    <canvas id="meme-canvas" style="border: 1px solid black;"></canvas>
+  </div>
+  <div class="editor-controls">
+    <form id="create-meme-form" action="/meme/image" enctype="multipart/form-data" method="post">
+      <div class="control">
+        <label>Top Text</label><br/>
+        <input type="text" id="editor-upper-text" tabindex="1"
+            maxLength="100">
+        <button class="action-button id-inc-upper-text-button">+</button>
+        <button class="action-button id-dec-upper-text-button">-</button>
+      </div>
+      <div class="control">
+        <label>Bottom Text</label><br/>
+        <input type="text" id="editor-lower-text" tabindex="2"
+            maxLength="100">
+        <button class="action-button id-inc-lower-text-button">+</button>
+        <button class="action-button id-dec-lower-text-button">-</button>
+      </div>
+      <div class="control">
+        <label>Unlisted?</label>
+        <input type="checkbox" id="unlist-meme-checkbox" class="checkbox">
+      </div>
+      <div class="control">
+        <input class="action-button id-create-meme-button" tabindex="3" type="submit" value="Create Meme">
+      </div>
+      <div>
+        <a href="/memes?template_name=${name}">
+          View <strong>${name}</strong> memes
+        </a>
+      </div>
+      % if is_owner:
+        <br>
+        <div class="action-button red id-delete-template" data-id="${name}">
+          Delete Template
+        </div>
+      % endif
+    </form>
+  </div>
+</div>

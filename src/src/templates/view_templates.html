@@ -1,0 +1,39 @@
+<%inherit file="base.html"/>
+
+<%block name="title">Select a Meme Template</%block>
+
+<a href="/template">
+  <div class="action-button green">
+    Upload New Template
+  </div>
+</a>
+
+<div class="clear"></div>
+<br/>
+
+<p>
+  Quick select
+  <select class="id-select-template select-template">
+    <option value=""></option>
+    % for template in alpha_sorted_templates:
+      <option value="${template.name}">${template.name}</option>
+    % endfor
+  </select>
+</p>
+
+<div class="clear"></div>
+
+<br>
+<p>
+  Select a Meme Template below
+</p>
+% for template in templates:
+  <div class="meme-thumb">
+    <a href="/meme?template_name=${template.name}">
+      <img class="meme-image" src="/template/image/${template.name}?size=thumbnail">
+    </a>
+    <div class="meme-details">
+      <span class="template-name">${template.name}</span>
+    </div>
+  </div>
+% endfor
