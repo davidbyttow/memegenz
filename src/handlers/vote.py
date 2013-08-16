@@ -26,11 +26,7 @@ class VoteHandler(webapp2.RequestHandler):
     voter = users.get_current_user().email()
     voted_meme = meme.vote_for_meme(meme_id, voter)
 
-    # TODO(d): Let others use this.
-#    logging.info(voted_meme.creator)
-#    if voted_meme and voted_meme.creator == 'd@squareup.com':
-#      mail.send_mail_to_user(voted_meme.creator, 'Your meme on the move!',
-#        'Someone has voted for your meme: http://memegenz.corp.squareup.com/meme/' + voted_meme.key().name())
+    # TODO(d): Voting notifications.
 
     self.redirect('/meme/' + meme_id)
 

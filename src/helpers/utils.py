@@ -1,5 +1,5 @@
 
-import logging
+import config
 import os
 import sys
 import time
@@ -15,7 +15,7 @@ def make_user_email(user_name):
     return user_name
   if is_dev_mode():
     return user_name + '@example.com'
-  return user_name + '@squareup.com'
+  return user_name + '@' + config.EMAIL_DOMAIN
 
 
 def make_user_name(user_email):

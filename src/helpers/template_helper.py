@@ -1,8 +1,6 @@
 import os
 import sys
 
-#sys.path.append(os.path.abspath('../mako'))
-
 from mako.template import Template
 from mako.lookup import TemplateLookup
 
